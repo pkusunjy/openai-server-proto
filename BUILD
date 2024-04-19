@@ -8,7 +8,7 @@ package(
 # auth
 proto_library(
     name = 'auth_proto',
-    srcs = ['auth.proto'],
+    srcs = ['auth/auth.proto'],
 )
 
 cc_proto_library(
@@ -26,7 +26,7 @@ cc_grpc_library(
 # chat_completion
 proto_library(
     name = 'chat_completion_proto',
-    srcs = ['chat_completion.proto'],
+    srcs = ['chat_completion/chat_completion.proto'],
 )
 
 cc_proto_library(

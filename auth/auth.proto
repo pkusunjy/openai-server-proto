@@ -1,5 +1,5 @@
 syntax="proto3";
-package chat_completion;
+package auth;
 option go_package = "github.com/pkusunjy/openai-server-proto/auth";
 
 message AuthRequest {

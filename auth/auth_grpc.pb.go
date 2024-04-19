@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v3.19.4
-// source: auth.proto
+// source: auth/auth.proto
 
 package auth
 
@@ -19,7 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	AuthService_GetWxMiniprogramToken_FullMethodName = "/chat_completion.AuthService/get_wx_miniprogram_token"
+	AuthService_GetWxMiniprogramToken_FullMethodName = "/auth.AuthService/get_wx_miniprogram_token"
 )
 
 // AuthServiceClient is the client API for AuthService service.
@@ -96,7 +96,7 @@ func _AuthService_GetWxMiniprogramToken_Handler(srv interface{}, ctx context.Con
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var AuthService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "chat_completion.AuthService",
+	ServiceName: "auth.AuthService",
 	HandlerType: (*AuthServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -105,5 +105,5 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "auth.proto",
+	Metadata: "auth/auth.proto",
 }
