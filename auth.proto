@@ -1,0 +1,16 @@
+syntax="proto3";
+package chat_completion;
+option go_package = "github.com/pkusunjy/openai-server-proto/auth";
+
+message AuthRequest {
+
+};
+
+message AuthResponse {
+    bytes token = 1;
+};
+
+service AuthService {
+    rpc get_wx_miniprogram_token (AuthRequest) returns (AuthResponse) {}
+};
+

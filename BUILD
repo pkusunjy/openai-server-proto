@@ -5,6 +5,24 @@ package(
     default_visibility = ['//visibility:public'],
 )
 
+# auth
+proto_library(
+    name = 'auth_proto',
+    srcs = ['auth.proto'],
+)
+
+cc_proto_library(
+    name = 'auth_cc_proto',
+    deps = [':auth_proto'],
+)
+
+cc_grpc_library(
+    name = 'auth_cc_grpc',
+    srcs = [':auth_proto'],
+    grpc_only = True,
+    deps = [':auth_cc_proto'],
+)
+
 # chat_completion
 proto_library(
     name = 'chat_completion_proto',
