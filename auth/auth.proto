@@ -7,7 +7,7 @@ message AuthRequest {
 };
 
 message AuthResponse {
-    bytes token = 1;
+    string token = 1;
 };
 
 service AuthService {
