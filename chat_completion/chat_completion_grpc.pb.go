@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v3.19.4
-// source: chat_completion.proto
+// source: chat_completion/chat_completion.proto
 
 package chat_completion
 
@@ -19,10 +19,40 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	ChatService_Ask_FullMethodName                 = "/chat_completion.ChatService/ask"
-	ChatService_Chat_FullMethodName                = "/chat_completion.ChatService/chat"
-	ChatService_WriteArticleByTitle_FullMethodName = "/chat_completion.ChatService/write_article_by_title"
-	ChatService_TranscribeJudge_FullMethodName     = "/chat_completion.ChatService/transcribe_judge"
+	ChatService_Ask_FullMethodName                          = "/chat_completion.ChatService/ask"
+	ChatService_Chat_FullMethodName                         = "/chat_completion.ChatService/chat"
+	ChatService_WriteArticleByTitle_FullMethodName          = "/chat_completion.ChatService/write_article_by_title"
+	ChatService_TranscribeJudge_FullMethodName              = "/chat_completion.ChatService/transcribe_judge"
+	ChatService_IeltsSpeakingP1Generate_FullMethodName      = "/chat_completion.ChatService/ielts_speaking_p1_generate"
+	ChatService_IeltsSpeakingP1Enrich_FullMethodName        = "/chat_completion.ChatService/ielts_speaking_p1_enrich"
+	ChatService_IeltsSpeakingP2Generate_FullMethodName      = "/chat_completion.ChatService/ielts_speaking_p2_generate"
+	ChatService_IeltsSpeakingP2Enrich_FullMethodName        = "/chat_completion.ChatService/ielts_speaking_p2_enrich"
+	ChatService_IeltsSpeakingP2Score_FullMethodName         = "/chat_completion.ChatService/ielts_speaking_p2_score"
+	ChatService_IeltsSpeakingP3Generate_FullMethodName      = "/chat_completion.ChatService/ielts_speaking_p3_generate"
+	ChatService_IeltsSpeakingP3Enrich_FullMethodName        = "/chat_completion.ChatService/ielts_speaking_p3_enrich"
+	ChatService_IeltsWritingT1Enrich_FullMethodName         = "/chat_completion.ChatService/ielts_writing_t1_enrich"
+	ChatService_IeltsWritingT1Score_FullMethodName          = "/chat_completion.ChatService/ielts_writing_t1_score"
+	ChatService_IeltsWritingT2Generate_FullMethodName       = "/chat_completion.ChatService/ielts_writing_t2_generate"
+	ChatService_IeltsWritingT2Enrich_FullMethodName         = "/chat_completion.ChatService/ielts_writing_t2_enrich"
+	ChatService_IeltsWritingT2Score_FullMethodName          = "/chat_completion.ChatService/ielts_writing_t2_score"
+	ChatService_IeltsSpeakingWordsSynonyms_FullMethodName   = "/chat_completion.ChatService/ielts_speaking_words_synonyms"
+	ChatService_IeltsSpeakingWordsUsage_FullMethodName      = "/chat_completion.ChatService/ielts_speaking_words_usage"
+	ChatService_IeltsWritingWordsTheme_FullMethodName       = "/chat_completion.ChatService/ielts_writing_words_theme"
+	ChatService_IeltsWritingWordsSynonyms_FullMethodName    = "/chat_completion.ChatService/ielts_writing_words_synonyms"
+	ChatService_IeltsWritingWordsCombination_FullMethodName = "/chat_completion.ChatService/ielts_writing_words_combination"
+	ChatService_ToeflSpeakingP1Generate_FullMethodName      = "/chat_completion.ChatService/toefl_speaking_p1_generate"
+	ChatService_ToeflSpeakingP1Enrich_FullMethodName        = "/chat_completion.ChatService/toefl_speaking_p1_enrich"
+	ChatService_ToeflSpeakingP1Score_FullMethodName         = "/chat_completion.ChatService/toefl_speaking_p1_score"
+	ChatService_ToeflWritingP1Enrich_FullMethodName         = "/chat_completion.ChatService/toefl_writing_p1_enrich"
+	ChatService_ToeflWritingP1Score_FullMethodName          = "/chat_completion.ChatService/toefl_writing_p1_score"
+	ChatService_ToeflWritingP2Enrich_FullMethodName         = "/chat_completion.ChatService/toefl_writing_p2_enrich"
+	ChatService_ToeflWritingP2Score_FullMethodName          = "/chat_completion.ChatService/toefl_writing_p2_score"
+	ChatService_ToeflWritingP3Enrich_FullMethodName         = "/chat_completion.ChatService/toefl_writing_p3_enrich"
+	ChatService_ToeflWritingP3Score_FullMethodName          = "/chat_completion.ChatService/toefl_writing_p3_score"
+	ChatService_CnToEn_FullMethodName                       = "/chat_completion.ChatService/cn_to_en"
+	ChatService_EnToCn_FullMethodName                       = "/chat_completion.ChatService/en_to_cn"
+	ChatService_IeltsSpeakingExercise_FullMethodName        = "/chat_completion.ChatService/ielts_speaking_exercise"
+	ChatService_IeltsSpeakingExam_FullMethodName            = "/chat_completion.ChatService/ielts_speaking_exam"
 )
 
 // ChatServiceClient is the client API for ChatService service.
@@ -33,6 +63,49 @@ type ChatServiceClient interface {
 	Chat(ctx context.Context, opts ...grpc.CallOption) (ChatService_ChatClient, error)
 	WriteArticleByTitle(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_WriteArticleByTitleClient, error)
 	TranscribeJudge(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (*ChatMessage, error)
+	// 雅思口语P1
+	IeltsSpeakingP1Generate(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsSpeakingP1GenerateClient, error)
+	IeltsSpeakingP1Enrich(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsSpeakingP1EnrichClient, error)
+	// 雅思口语P2
+	IeltsSpeakingP2Generate(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsSpeakingP2GenerateClient, error)
+	IeltsSpeakingP2Enrich(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsSpeakingP2EnrichClient, error)
+	IeltsSpeakingP2Score(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsSpeakingP2ScoreClient, error)
+	// 雅思口语P3
+	IeltsSpeakingP3Generate(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsSpeakingP3GenerateClient, error)
+	IeltsSpeakingP3Enrich(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsSpeakingP3EnrichClient, error)
+	// 雅思写作T1
+	IeltsWritingT1Enrich(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsWritingT1EnrichClient, error)
+	IeltsWritingT1Score(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsWritingT1ScoreClient, error)
+	// 雅思写作T2
+	IeltsWritingT2Generate(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsWritingT2GenerateClient, error)
+	IeltsWritingT2Enrich(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsWritingT2EnrichClient, error)
+	IeltsWritingT2Score(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsWritingT2ScoreClient, error)
+	// 高分词汇挖掘
+	IeltsSpeakingWordsSynonyms(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsSpeakingWordsSynonymsClient, error)
+	IeltsSpeakingWordsUsage(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsSpeakingWordsUsageClient, error)
+	IeltsWritingWordsTheme(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsWritingWordsThemeClient, error)
+	IeltsWritingWordsSynonyms(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsWritingWordsSynonymsClient, error)
+	IeltsWritingWordsCombination(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsWritingWordsCombinationClient, error)
+	// 托福口语
+	ToeflSpeakingP1Generate(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_ToeflSpeakingP1GenerateClient, error)
+	ToeflSpeakingP1Enrich(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_ToeflSpeakingP1EnrichClient, error)
+	ToeflSpeakingP1Score(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_ToeflSpeakingP1ScoreClient, error)
+	// 托福综合写作
+	ToeflWritingP1Enrich(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_ToeflWritingP1EnrichClient, error)
+	ToeflWritingP1Score(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_ToeflWritingP1ScoreClient, error)
+	// 托福学术写作
+	ToeflWritingP2Enrich(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_ToeflWritingP2EnrichClient, error)
+	ToeflWritingP2Score(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_ToeflWritingP2ScoreClient, error)
+	// 职场邮件
+	ToeflWritingP3Enrich(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_ToeflWritingP3EnrichClient, error)
+	ToeflWritingP3Score(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_ToeflWritingP3ScoreClient, error)
+	// 中英互译
+	CnToEn(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_CnToEnClient, error)
+	EnToCn(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_EnToCnClient, error)
+	// 雅思口语陪练
+	IeltsSpeakingExercise(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (*ChatMessage, error)
+	// 雅思口语模考
+	IeltsSpeakingExam(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (*ChatMessage, error)
 }
 
 type chatServiceClient struct {
@@ -124,6 +197,920 @@ func (c *chatServiceClient) TranscribeJudge(ctx context.Context, in *ChatMessage
 	return out, nil
 }
 
+func (c *chatServiceClient) IeltsSpeakingP1Generate(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsSpeakingP1GenerateClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[2], ChatService_IeltsSpeakingP1Generate_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceIeltsSpeakingP1GenerateClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_IeltsSpeakingP1GenerateClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceIeltsSpeakingP1GenerateClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceIeltsSpeakingP1GenerateClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) IeltsSpeakingP1Enrich(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsSpeakingP1EnrichClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[3], ChatService_IeltsSpeakingP1Enrich_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceIeltsSpeakingP1EnrichClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_IeltsSpeakingP1EnrichClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceIeltsSpeakingP1EnrichClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceIeltsSpeakingP1EnrichClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) IeltsSpeakingP2Generate(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsSpeakingP2GenerateClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[4], ChatService_IeltsSpeakingP2Generate_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceIeltsSpeakingP2GenerateClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_IeltsSpeakingP2GenerateClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceIeltsSpeakingP2GenerateClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceIeltsSpeakingP2GenerateClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) IeltsSpeakingP2Enrich(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsSpeakingP2EnrichClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[5], ChatService_IeltsSpeakingP2Enrich_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceIeltsSpeakingP2EnrichClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_IeltsSpeakingP2EnrichClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceIeltsSpeakingP2EnrichClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceIeltsSpeakingP2EnrichClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) IeltsSpeakingP2Score(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsSpeakingP2ScoreClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[6], ChatService_IeltsSpeakingP2Score_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceIeltsSpeakingP2ScoreClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_IeltsSpeakingP2ScoreClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceIeltsSpeakingP2ScoreClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceIeltsSpeakingP2ScoreClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) IeltsSpeakingP3Generate(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsSpeakingP3GenerateClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[7], ChatService_IeltsSpeakingP3Generate_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceIeltsSpeakingP3GenerateClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_IeltsSpeakingP3GenerateClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceIeltsSpeakingP3GenerateClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceIeltsSpeakingP3GenerateClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) IeltsSpeakingP3Enrich(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsSpeakingP3EnrichClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[8], ChatService_IeltsSpeakingP3Enrich_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceIeltsSpeakingP3EnrichClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_IeltsSpeakingP3EnrichClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceIeltsSpeakingP3EnrichClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceIeltsSpeakingP3EnrichClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) IeltsWritingT1Enrich(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsWritingT1EnrichClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[9], ChatService_IeltsWritingT1Enrich_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceIeltsWritingT1EnrichClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_IeltsWritingT1EnrichClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceIeltsWritingT1EnrichClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceIeltsWritingT1EnrichClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) IeltsWritingT1Score(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsWritingT1ScoreClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[10], ChatService_IeltsWritingT1Score_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceIeltsWritingT1ScoreClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_IeltsWritingT1ScoreClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceIeltsWritingT1ScoreClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceIeltsWritingT1ScoreClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) IeltsWritingT2Generate(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsWritingT2GenerateClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[11], ChatService_IeltsWritingT2Generate_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceIeltsWritingT2GenerateClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_IeltsWritingT2GenerateClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceIeltsWritingT2GenerateClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceIeltsWritingT2GenerateClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) IeltsWritingT2Enrich(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsWritingT2EnrichClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[12], ChatService_IeltsWritingT2Enrich_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceIeltsWritingT2EnrichClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_IeltsWritingT2EnrichClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceIeltsWritingT2EnrichClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceIeltsWritingT2EnrichClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) IeltsWritingT2Score(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsWritingT2ScoreClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[13], ChatService_IeltsWritingT2Score_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceIeltsWritingT2ScoreClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_IeltsWritingT2ScoreClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceIeltsWritingT2ScoreClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceIeltsWritingT2ScoreClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) IeltsSpeakingWordsSynonyms(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsSpeakingWordsSynonymsClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[14], ChatService_IeltsSpeakingWordsSynonyms_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceIeltsSpeakingWordsSynonymsClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_IeltsSpeakingWordsSynonymsClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceIeltsSpeakingWordsSynonymsClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceIeltsSpeakingWordsSynonymsClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) IeltsSpeakingWordsUsage(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsSpeakingWordsUsageClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[15], ChatService_IeltsSpeakingWordsUsage_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceIeltsSpeakingWordsUsageClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_IeltsSpeakingWordsUsageClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceIeltsSpeakingWordsUsageClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceIeltsSpeakingWordsUsageClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) IeltsWritingWordsTheme(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsWritingWordsThemeClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[16], ChatService_IeltsWritingWordsTheme_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceIeltsWritingWordsThemeClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_IeltsWritingWordsThemeClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceIeltsWritingWordsThemeClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceIeltsWritingWordsThemeClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) IeltsWritingWordsSynonyms(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsWritingWordsSynonymsClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[17], ChatService_IeltsWritingWordsSynonyms_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceIeltsWritingWordsSynonymsClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_IeltsWritingWordsSynonymsClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceIeltsWritingWordsSynonymsClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceIeltsWritingWordsSynonymsClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) IeltsWritingWordsCombination(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_IeltsWritingWordsCombinationClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[18], ChatService_IeltsWritingWordsCombination_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceIeltsWritingWordsCombinationClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_IeltsWritingWordsCombinationClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceIeltsWritingWordsCombinationClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceIeltsWritingWordsCombinationClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) ToeflSpeakingP1Generate(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_ToeflSpeakingP1GenerateClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[19], ChatService_ToeflSpeakingP1Generate_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceToeflSpeakingP1GenerateClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_ToeflSpeakingP1GenerateClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceToeflSpeakingP1GenerateClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceToeflSpeakingP1GenerateClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) ToeflSpeakingP1Enrich(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_ToeflSpeakingP1EnrichClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[20], ChatService_ToeflSpeakingP1Enrich_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceToeflSpeakingP1EnrichClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_ToeflSpeakingP1EnrichClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceToeflSpeakingP1EnrichClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceToeflSpeakingP1EnrichClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) ToeflSpeakingP1Score(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_ToeflSpeakingP1ScoreClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[21], ChatService_ToeflSpeakingP1Score_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceToeflSpeakingP1ScoreClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_ToeflSpeakingP1ScoreClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceToeflSpeakingP1ScoreClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceToeflSpeakingP1ScoreClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) ToeflWritingP1Enrich(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_ToeflWritingP1EnrichClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[22], ChatService_ToeflWritingP1Enrich_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceToeflWritingP1EnrichClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_ToeflWritingP1EnrichClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceToeflWritingP1EnrichClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceToeflWritingP1EnrichClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) ToeflWritingP1Score(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_ToeflWritingP1ScoreClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[23], ChatService_ToeflWritingP1Score_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceToeflWritingP1ScoreClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_ToeflWritingP1ScoreClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceToeflWritingP1ScoreClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceToeflWritingP1ScoreClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) ToeflWritingP2Enrich(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_ToeflWritingP2EnrichClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[24], ChatService_ToeflWritingP2Enrich_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceToeflWritingP2EnrichClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_ToeflWritingP2EnrichClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceToeflWritingP2EnrichClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceToeflWritingP2EnrichClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) ToeflWritingP2Score(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_ToeflWritingP2ScoreClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[25], ChatService_ToeflWritingP2Score_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceToeflWritingP2ScoreClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_ToeflWritingP2ScoreClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceToeflWritingP2ScoreClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceToeflWritingP2ScoreClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) ToeflWritingP3Enrich(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_ToeflWritingP3EnrichClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[26], ChatService_ToeflWritingP3Enrich_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceToeflWritingP3EnrichClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_ToeflWritingP3EnrichClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceToeflWritingP3EnrichClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceToeflWritingP3EnrichClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) ToeflWritingP3Score(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_ToeflWritingP3ScoreClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[27], ChatService_ToeflWritingP3Score_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceToeflWritingP3ScoreClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_ToeflWritingP3ScoreClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceToeflWritingP3ScoreClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceToeflWritingP3ScoreClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) CnToEn(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_CnToEnClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[28], ChatService_CnToEn_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceCnToEnClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_CnToEnClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceCnToEnClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceCnToEnClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) EnToCn(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_EnToCnClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[29], ChatService_EnToCn_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceEnToCnClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ChatService_EnToCnClient interface {
+	Recv() (*ChatMessage, error)
+	grpc.ClientStream
+}
+
+type chatServiceEnToCnClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceEnToCnClient) Recv() (*ChatMessage, error) {
+	m := new(ChatMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *chatServiceClient) IeltsSpeakingExercise(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (*ChatMessage, error) {
+	out := new(ChatMessage)
+	err := c.cc.Invoke(ctx, ChatService_IeltsSpeakingExercise_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *chatServiceClient) IeltsSpeakingExam(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (*ChatMessage, error) {
+	out := new(ChatMessage)
+	err := c.cc.Invoke(ctx, ChatService_IeltsSpeakingExam_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ChatServiceServer is the server API for ChatService service.
 // All implementations must embed UnimplementedChatServiceServer
 // for forward compatibility
@@ -132,6 +1119,49 @@ type ChatServiceServer interface {
 	Chat(ChatService_ChatServer) error
 	WriteArticleByTitle(*ChatMessage, ChatService_WriteArticleByTitleServer) error
 	TranscribeJudge(context.Context, *ChatMessage) (*ChatMessage, error)
+	// 雅思口语P1
+	IeltsSpeakingP1Generate(*ChatMessage, ChatService_IeltsSpeakingP1GenerateServer) error
+	IeltsSpeakingP1Enrich(*ChatMessage, ChatService_IeltsSpeakingP1EnrichServer) error
+	// 雅思口语P2
+	IeltsSpeakingP2Generate(*ChatMessage, ChatService_IeltsSpeakingP2GenerateServer) error
+	IeltsSpeakingP2Enrich(*ChatMessage, ChatService_IeltsSpeakingP2EnrichServer) error
+	IeltsSpeakingP2Score(*ChatMessage, ChatService_IeltsSpeakingP2ScoreServer) error
+	// 雅思口语P3
+	IeltsSpeakingP3Generate(*ChatMessage, ChatService_IeltsSpeakingP3GenerateServer) error
+	IeltsSpeakingP3Enrich(*ChatMessage, ChatService_IeltsSpeakingP3EnrichServer) error
+	// 雅思写作T1
+	IeltsWritingT1Enrich(*ChatMessage, ChatService_IeltsWritingT1EnrichServer) error
+	IeltsWritingT1Score(*ChatMessage, ChatService_IeltsWritingT1ScoreServer) error
+	// 雅思写作T2
+	IeltsWritingT2Generate(*ChatMessage, ChatService_IeltsWritingT2GenerateServer) error
+	IeltsWritingT2Enrich(*ChatMessage, ChatService_IeltsWritingT2EnrichServer) error
+	IeltsWritingT2Score(*ChatMessage, ChatService_IeltsWritingT2ScoreServer) error
+	// 高分词汇挖掘
+	IeltsSpeakingWordsSynonyms(*ChatMessage, ChatService_IeltsSpeakingWordsSynonymsServer) error
+	IeltsSpeakingWordsUsage(*ChatMessage, ChatService_IeltsSpeakingWordsUsageServer) error
+	IeltsWritingWordsTheme(*ChatMessage, ChatService_IeltsWritingWordsThemeServer) error
+	IeltsWritingWordsSynonyms(*ChatMessage, ChatService_IeltsWritingWordsSynonymsServer) error
+	IeltsWritingWordsCombination(*ChatMessage, ChatService_IeltsWritingWordsCombinationServer) error
+	// 托福口语
+	ToeflSpeakingP1Generate(*ChatMessage, ChatService_ToeflSpeakingP1GenerateServer) error
+	ToeflSpeakingP1Enrich(*ChatMessage, ChatService_ToeflSpeakingP1EnrichServer) error
+	ToeflSpeakingP1Score(*ChatMessage, ChatService_ToeflSpeakingP1ScoreServer) error
+	// 托福综合写作
+	ToeflWritingP1Enrich(*ChatMessage, ChatService_ToeflWritingP1EnrichServer) error
+	ToeflWritingP1Score(*ChatMessage, ChatService_ToeflWritingP1ScoreServer) error
+	// 托福学术写作
+	ToeflWritingP2Enrich(*ChatMessage, ChatService_ToeflWritingP2EnrichServer) error
+	ToeflWritingP2Score(*ChatMessage, ChatService_ToeflWritingP2ScoreServer) error
+	// 职场邮件
+	ToeflWritingP3Enrich(*ChatMessage, ChatService_ToeflWritingP3EnrichServer) error
+	ToeflWritingP3Score(*ChatMessage, ChatService_ToeflWritingP3ScoreServer) error
+	// 中英互译
+	CnToEn(*ChatMessage, ChatService_CnToEnServer) error
+	EnToCn(*ChatMessage, ChatService_EnToCnServer) error
+	// 雅思口语陪练
+	IeltsSpeakingExercise(context.Context, *ChatMessage) (*ChatMessage, error)
+	// 雅思口语模考
+	IeltsSpeakingExam(context.Context, *ChatMessage) (*ChatMessage, error)
 	mustEmbedUnimplementedChatServiceServer()
 }
 
@@ -150,6 +1180,96 @@ func (UnimplementedChatServiceServer) WriteArticleByTitle(*ChatMessage, ChatServ
 }
 func (UnimplementedChatServiceServer) TranscribeJudge(context.Context, *ChatMessage) (*ChatMessage, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TranscribeJudge not implemented")
+}
+func (UnimplementedChatServiceServer) IeltsSpeakingP1Generate(*ChatMessage, ChatService_IeltsSpeakingP1GenerateServer) error {
+	return status.Errorf(codes.Unimplemented, "method IeltsSpeakingP1Generate not implemented")
+}
+func (UnimplementedChatServiceServer) IeltsSpeakingP1Enrich(*ChatMessage, ChatService_IeltsSpeakingP1EnrichServer) error {
+	return status.Errorf(codes.Unimplemented, "method IeltsSpeakingP1Enrich not implemented")
+}
+func (UnimplementedChatServiceServer) IeltsSpeakingP2Generate(*ChatMessage, ChatService_IeltsSpeakingP2GenerateServer) error {
+	return status.Errorf(codes.Unimplemented, "method IeltsSpeakingP2Generate not implemented")
+}
+func (UnimplementedChatServiceServer) IeltsSpeakingP2Enrich(*ChatMessage, ChatService_IeltsSpeakingP2EnrichServer) error {
+	return status.Errorf(codes.Unimplemented, "method IeltsSpeakingP2Enrich not implemented")
+}
+func (UnimplementedChatServiceServer) IeltsSpeakingP2Score(*ChatMessage, ChatService_IeltsSpeakingP2ScoreServer) error {
+	return status.Errorf(codes.Unimplemented, "method IeltsSpeakingP2Score not implemented")
+}
+func (UnimplementedChatServiceServer) IeltsSpeakingP3Generate(*ChatMessage, ChatService_IeltsSpeakingP3GenerateServer) error {
+	return status.Errorf(codes.Unimplemented, "method IeltsSpeakingP3Generate not implemented")
+}
+func (UnimplementedChatServiceServer) IeltsSpeakingP3Enrich(*ChatMessage, ChatService_IeltsSpeakingP3EnrichServer) error {
+	return status.Errorf(codes.Unimplemented, "method IeltsSpeakingP3Enrich not implemented")
+}
+func (UnimplementedChatServiceServer) IeltsWritingT1Enrich(*ChatMessage, ChatService_IeltsWritingT1EnrichServer) error {
+	return status.Errorf(codes.Unimplemented, "method IeltsWritingT1Enrich not implemented")
+}
+func (UnimplementedChatServiceServer) IeltsWritingT1Score(*ChatMessage, ChatService_IeltsWritingT1ScoreServer) error {
+	return status.Errorf(codes.Unimplemented, "method IeltsWritingT1Score not implemented")
+}
+func (UnimplementedChatServiceServer) IeltsWritingT2Generate(*ChatMessage, ChatService_IeltsWritingT2GenerateServer) error {
+	return status.Errorf(codes.Unimplemented, "method IeltsWritingT2Generate not implemented")
+}
+func (UnimplementedChatServiceServer) IeltsWritingT2Enrich(*ChatMessage, ChatService_IeltsWritingT2EnrichServer) error {
+	return status.Errorf(codes.Unimplemented, "method IeltsWritingT2Enrich not implemented")
+}
+func (UnimplementedChatServiceServer) IeltsWritingT2Score(*ChatMessage, ChatService_IeltsWritingT2ScoreServer) error {
+	return status.Errorf(codes.Unimplemented, "method IeltsWritingT2Score not implemented")
+}
+func (UnimplementedChatServiceServer) IeltsSpeakingWordsSynonyms(*ChatMessage, ChatService_IeltsSpeakingWordsSynonymsServer) error {
+	return status.Errorf(codes.Unimplemented, "method IeltsSpeakingWordsSynonyms not implemented")
+}
+func (UnimplementedChatServiceServer) IeltsSpeakingWordsUsage(*ChatMessage, ChatService_IeltsSpeakingWordsUsageServer) error {
+	return status.Errorf(codes.Unimplemented, "method IeltsSpeakingWordsUsage not implemented")
+}
+func (UnimplementedChatServiceServer) IeltsWritingWordsTheme(*ChatMessage, ChatService_IeltsWritingWordsThemeServer) error {
+	return status.Errorf(codes.Unimplemented, "method IeltsWritingWordsTheme not implemented")
+}
+func (UnimplementedChatServiceServer) IeltsWritingWordsSynonyms(*ChatMessage, ChatService_IeltsWritingWordsSynonymsServer) error {
+	return status.Errorf(codes.Unimplemented, "method IeltsWritingWordsSynonyms not implemented")
+}
+func (UnimplementedChatServiceServer) IeltsWritingWordsCombination(*ChatMessage, ChatService_IeltsWritingWordsCombinationServer) error {
+	return status.Errorf(codes.Unimplemented, "method IeltsWritingWordsCombination not implemented")
+}
+func (UnimplementedChatServiceServer) ToeflSpeakingP1Generate(*ChatMessage, ChatService_ToeflSpeakingP1GenerateServer) error {
+	return status.Errorf(codes.Unimplemented, "method ToeflSpeakingP1Generate not implemented")
+}
+func (UnimplementedChatServiceServer) ToeflSpeakingP1Enrich(*ChatMessage, ChatService_ToeflSpeakingP1EnrichServer) error {
+	return status.Errorf(codes.Unimplemented, "method ToeflSpeakingP1Enrich not implemented")
+}
+func (UnimplementedChatServiceServer) ToeflSpeakingP1Score(*ChatMessage, ChatService_ToeflSpeakingP1ScoreServer) error {
+	return status.Errorf(codes.Unimplemented, "method ToeflSpeakingP1Score not implemented")
+}
+func (UnimplementedChatServiceServer) ToeflWritingP1Enrich(*ChatMessage, ChatService_ToeflWritingP1EnrichServer) error {
+	return status.Errorf(codes.Unimplemented, "method ToeflWritingP1Enrich not implemented")
+}
+func (UnimplementedChatServiceServer) ToeflWritingP1Score(*ChatMessage, ChatService_ToeflWritingP1ScoreServer) error {
+	return status.Errorf(codes.Unimplemented, "method ToeflWritingP1Score not implemented")
+}
+func (UnimplementedChatServiceServer) ToeflWritingP2Enrich(*ChatMessage, ChatService_ToeflWritingP2EnrichServer) error {
+	return status.Errorf(codes.Unimplemented, "method ToeflWritingP2Enrich not implemented")
+}
+func (UnimplementedChatServiceServer) ToeflWritingP2Score(*ChatMessage, ChatService_ToeflWritingP2ScoreServer) error {
+	return status.Errorf(codes.Unimplemented, "method ToeflWritingP2Score not implemented")
+}
+func (UnimplementedChatServiceServer) ToeflWritingP3Enrich(*ChatMessage, ChatService_ToeflWritingP3EnrichServer) error {
+	return status.Errorf(codes.Unimplemented, "method ToeflWritingP3Enrich not implemented")
+}
+func (UnimplementedChatServiceServer) ToeflWritingP3Score(*ChatMessage, ChatService_ToeflWritingP3ScoreServer) error {
+	return status.Errorf(codes.Unimplemented, "method ToeflWritingP3Score not implemented")
+}
+func (UnimplementedChatServiceServer) CnToEn(*ChatMessage, ChatService_CnToEnServer) error {
+	return status.Errorf(codes.Unimplemented, "method CnToEn not implemented")
+}
+func (UnimplementedChatServiceServer) EnToCn(*ChatMessage, ChatService_EnToCnServer) error {
+	return status.Errorf(codes.Unimplemented, "method EnToCn not implemented")
+}
+func (UnimplementedChatServiceServer) IeltsSpeakingExercise(context.Context, *ChatMessage) (*ChatMessage, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method IeltsSpeakingExercise not implemented")
+}
+func (UnimplementedChatServiceServer) IeltsSpeakingExam(context.Context, *ChatMessage) (*ChatMessage, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method IeltsSpeakingExam not implemented")
 }
 func (UnimplementedChatServiceServer) mustEmbedUnimplementedChatServiceServer() {}
 
@@ -247,6 +1367,630 @@ func _ChatService_TranscribeJudge_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ChatService_IeltsSpeakingP1Generate_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).IeltsSpeakingP1Generate(m, &chatServiceIeltsSpeakingP1GenerateServer{stream})
+}
+
+type ChatService_IeltsSpeakingP1GenerateServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceIeltsSpeakingP1GenerateServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceIeltsSpeakingP1GenerateServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_IeltsSpeakingP1Enrich_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).IeltsSpeakingP1Enrich(m, &chatServiceIeltsSpeakingP1EnrichServer{stream})
+}
+
+type ChatService_IeltsSpeakingP1EnrichServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceIeltsSpeakingP1EnrichServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceIeltsSpeakingP1EnrichServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_IeltsSpeakingP2Generate_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).IeltsSpeakingP2Generate(m, &chatServiceIeltsSpeakingP2GenerateServer{stream})
+}
+
+type ChatService_IeltsSpeakingP2GenerateServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceIeltsSpeakingP2GenerateServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceIeltsSpeakingP2GenerateServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_IeltsSpeakingP2Enrich_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).IeltsSpeakingP2Enrich(m, &chatServiceIeltsSpeakingP2EnrichServer{stream})
+}
+
+type ChatService_IeltsSpeakingP2EnrichServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceIeltsSpeakingP2EnrichServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceIeltsSpeakingP2EnrichServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_IeltsSpeakingP2Score_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).IeltsSpeakingP2Score(m, &chatServiceIeltsSpeakingP2ScoreServer{stream})
+}
+
+type ChatService_IeltsSpeakingP2ScoreServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceIeltsSpeakingP2ScoreServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceIeltsSpeakingP2ScoreServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_IeltsSpeakingP3Generate_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).IeltsSpeakingP3Generate(m, &chatServiceIeltsSpeakingP3GenerateServer{stream})
+}
+
+type ChatService_IeltsSpeakingP3GenerateServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceIeltsSpeakingP3GenerateServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceIeltsSpeakingP3GenerateServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_IeltsSpeakingP3Enrich_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).IeltsSpeakingP3Enrich(m, &chatServiceIeltsSpeakingP3EnrichServer{stream})
+}
+
+type ChatService_IeltsSpeakingP3EnrichServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceIeltsSpeakingP3EnrichServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceIeltsSpeakingP3EnrichServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_IeltsWritingT1Enrich_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).IeltsWritingT1Enrich(m, &chatServiceIeltsWritingT1EnrichServer{stream})
+}
+
+type ChatService_IeltsWritingT1EnrichServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceIeltsWritingT1EnrichServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceIeltsWritingT1EnrichServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_IeltsWritingT1Score_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).IeltsWritingT1Score(m, &chatServiceIeltsWritingT1ScoreServer{stream})
+}
+
+type ChatService_IeltsWritingT1ScoreServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceIeltsWritingT1ScoreServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceIeltsWritingT1ScoreServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_IeltsWritingT2Generate_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).IeltsWritingT2Generate(m, &chatServiceIeltsWritingT2GenerateServer{stream})
+}
+
+type ChatService_IeltsWritingT2GenerateServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceIeltsWritingT2GenerateServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceIeltsWritingT2GenerateServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_IeltsWritingT2Enrich_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).IeltsWritingT2Enrich(m, &chatServiceIeltsWritingT2EnrichServer{stream})
+}
+
+type ChatService_IeltsWritingT2EnrichServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceIeltsWritingT2EnrichServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceIeltsWritingT2EnrichServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_IeltsWritingT2Score_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).IeltsWritingT2Score(m, &chatServiceIeltsWritingT2ScoreServer{stream})
+}
+
+type ChatService_IeltsWritingT2ScoreServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceIeltsWritingT2ScoreServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceIeltsWritingT2ScoreServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_IeltsSpeakingWordsSynonyms_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).IeltsSpeakingWordsSynonyms(m, &chatServiceIeltsSpeakingWordsSynonymsServer{stream})
+}
+
+type ChatService_IeltsSpeakingWordsSynonymsServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceIeltsSpeakingWordsSynonymsServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceIeltsSpeakingWordsSynonymsServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_IeltsSpeakingWordsUsage_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).IeltsSpeakingWordsUsage(m, &chatServiceIeltsSpeakingWordsUsageServer{stream})
+}
+
+type ChatService_IeltsSpeakingWordsUsageServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceIeltsSpeakingWordsUsageServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceIeltsSpeakingWordsUsageServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_IeltsWritingWordsTheme_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).IeltsWritingWordsTheme(m, &chatServiceIeltsWritingWordsThemeServer{stream})
+}
+
+type ChatService_IeltsWritingWordsThemeServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceIeltsWritingWordsThemeServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceIeltsWritingWordsThemeServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_IeltsWritingWordsSynonyms_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).IeltsWritingWordsSynonyms(m, &chatServiceIeltsWritingWordsSynonymsServer{stream})
+}
+
+type ChatService_IeltsWritingWordsSynonymsServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceIeltsWritingWordsSynonymsServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceIeltsWritingWordsSynonymsServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_IeltsWritingWordsCombination_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).IeltsWritingWordsCombination(m, &chatServiceIeltsWritingWordsCombinationServer{stream})
+}
+
+type ChatService_IeltsWritingWordsCombinationServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceIeltsWritingWordsCombinationServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceIeltsWritingWordsCombinationServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_ToeflSpeakingP1Generate_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).ToeflSpeakingP1Generate(m, &chatServiceToeflSpeakingP1GenerateServer{stream})
+}
+
+type ChatService_ToeflSpeakingP1GenerateServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceToeflSpeakingP1GenerateServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceToeflSpeakingP1GenerateServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_ToeflSpeakingP1Enrich_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).ToeflSpeakingP1Enrich(m, &chatServiceToeflSpeakingP1EnrichServer{stream})
+}
+
+type ChatService_ToeflSpeakingP1EnrichServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceToeflSpeakingP1EnrichServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceToeflSpeakingP1EnrichServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_ToeflSpeakingP1Score_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).ToeflSpeakingP1Score(m, &chatServiceToeflSpeakingP1ScoreServer{stream})
+}
+
+type ChatService_ToeflSpeakingP1ScoreServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceToeflSpeakingP1ScoreServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceToeflSpeakingP1ScoreServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_ToeflWritingP1Enrich_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).ToeflWritingP1Enrich(m, &chatServiceToeflWritingP1EnrichServer{stream})
+}
+
+type ChatService_ToeflWritingP1EnrichServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceToeflWritingP1EnrichServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceToeflWritingP1EnrichServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_ToeflWritingP1Score_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).ToeflWritingP1Score(m, &chatServiceToeflWritingP1ScoreServer{stream})
+}
+
+type ChatService_ToeflWritingP1ScoreServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceToeflWritingP1ScoreServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceToeflWritingP1ScoreServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_ToeflWritingP2Enrich_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).ToeflWritingP2Enrich(m, &chatServiceToeflWritingP2EnrichServer{stream})
+}
+
+type ChatService_ToeflWritingP2EnrichServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceToeflWritingP2EnrichServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceToeflWritingP2EnrichServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_ToeflWritingP2Score_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).ToeflWritingP2Score(m, &chatServiceToeflWritingP2ScoreServer{stream})
+}
+
+type ChatService_ToeflWritingP2ScoreServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceToeflWritingP2ScoreServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceToeflWritingP2ScoreServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_ToeflWritingP3Enrich_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).ToeflWritingP3Enrich(m, &chatServiceToeflWritingP3EnrichServer{stream})
+}
+
+type ChatService_ToeflWritingP3EnrichServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceToeflWritingP3EnrichServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceToeflWritingP3EnrichServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_ToeflWritingP3Score_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).ToeflWritingP3Score(m, &chatServiceToeflWritingP3ScoreServer{stream})
+}
+
+type ChatService_ToeflWritingP3ScoreServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceToeflWritingP3ScoreServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceToeflWritingP3ScoreServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_CnToEn_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).CnToEn(m, &chatServiceCnToEnServer{stream})
+}
+
+type ChatService_CnToEnServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceCnToEnServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceCnToEnServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_EnToCn_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ChatMessage)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).EnToCn(m, &chatServiceEnToCnServer{stream})
+}
+
+type ChatService_EnToCnServer interface {
+	Send(*ChatMessage) error
+	grpc.ServerStream
+}
+
+type chatServiceEnToCnServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceEnToCnServer) Send(m *ChatMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ChatService_IeltsSpeakingExercise_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChatMessage)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServiceServer).IeltsSpeakingExercise(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ChatService_IeltsSpeakingExercise_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServiceServer).IeltsSpeakingExercise(ctx, req.(*ChatMessage))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ChatService_IeltsSpeakingExam_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChatMessage)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServiceServer).IeltsSpeakingExam(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ChatService_IeltsSpeakingExam_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServiceServer).IeltsSpeakingExam(ctx, req.(*ChatMessage))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ChatService_ServiceDesc is the grpc.ServiceDesc for ChatService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -262,6 +2006,14 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "transcribe_judge",
 			Handler:    _ChatService_TranscribeJudge_Handler,
 		},
+		{
+			MethodName: "ielts_speaking_exercise",
+			Handler:    _ChatService_IeltsSpeakingExercise_Handler,
+		},
+		{
+			MethodName: "ielts_speaking_exam",
+			Handler:    _ChatService_IeltsSpeakingExam_Handler,
+		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
@@ -275,6 +2027,146 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 			Handler:       _ChatService_WriteArticleByTitle_Handler,
 			ServerStreams: true,
 		},
+		{
+			StreamName:    "ielts_speaking_p1_generate",
+			Handler:       _ChatService_IeltsSpeakingP1Generate_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "ielts_speaking_p1_enrich",
+			Handler:       _ChatService_IeltsSpeakingP1Enrich_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "ielts_speaking_p2_generate",
+			Handler:       _ChatService_IeltsSpeakingP2Generate_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "ielts_speaking_p2_enrich",
+			Handler:       _ChatService_IeltsSpeakingP2Enrich_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "ielts_speaking_p2_score",
+			Handler:       _ChatService_IeltsSpeakingP2Score_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "ielts_speaking_p3_generate",
+			Handler:       _ChatService_IeltsSpeakingP3Generate_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "ielts_speaking_p3_enrich",
+			Handler:       _ChatService_IeltsSpeakingP3Enrich_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "ielts_writing_t1_enrich",
+			Handler:       _ChatService_IeltsWritingT1Enrich_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "ielts_writing_t1_score",
+			Handler:       _ChatService_IeltsWritingT1Score_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "ielts_writing_t2_generate",
+			Handler:       _ChatService_IeltsWritingT2Generate_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "ielts_writing_t2_enrich",
+			Handler:       _ChatService_IeltsWritingT2Enrich_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "ielts_writing_t2_score",
+			Handler:       _ChatService_IeltsWritingT2Score_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "ielts_speaking_words_synonyms",
+			Handler:       _ChatService_IeltsSpeakingWordsSynonyms_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "ielts_speaking_words_usage",
+			Handler:       _ChatService_IeltsSpeakingWordsUsage_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "ielts_writing_words_theme",
+			Handler:       _ChatService_IeltsWritingWordsTheme_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "ielts_writing_words_synonyms",
+			Handler:       _ChatService_IeltsWritingWordsSynonyms_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "ielts_writing_words_combination",
+			Handler:       _ChatService_IeltsWritingWordsCombination_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "toefl_speaking_p1_generate",
+			Handler:       _ChatService_ToeflSpeakingP1Generate_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "toefl_speaking_p1_enrich",
+			Handler:       _ChatService_ToeflSpeakingP1Enrich_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "toefl_speaking_p1_score",
+			Handler:       _ChatService_ToeflSpeakingP1Score_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "toefl_writing_p1_enrich",
+			Handler:       _ChatService_ToeflWritingP1Enrich_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "toefl_writing_p1_score",
+			Handler:       _ChatService_ToeflWritingP1Score_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "toefl_writing_p2_enrich",
+			Handler:       _ChatService_ToeflWritingP2Enrich_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "toefl_writing_p2_score",
+			Handler:       _ChatService_ToeflWritingP2Score_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "toefl_writing_p3_enrich",
+			Handler:       _ChatService_ToeflWritingP3Enrich_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "toefl_writing_p3_score",
+			Handler:       _ChatService_ToeflWritingP3Score_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "cn_to_en",
+			Handler:       _ChatService_CnToEn_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "en_to_cn",
+			Handler:       _ChatService_EnToCn_Handler,
+			ServerStreams: true,
+		},
 	},
-	Metadata: "chat_completion.proto",
+	Metadata: "chat_completion/chat_completion.proto",
 }
