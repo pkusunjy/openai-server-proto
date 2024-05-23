@@ -30,12 +30,13 @@ message ExerciseItem {
 message ExercisePoolRequest {
     Scene scene = 1;
     uint32 count = 2;
+    repeated ExerciseItem items = 3;
 };
 
 message ExercisePoolResponse {
     uint32 err_no = 1;
     string err_msg = 2;
-    repeated ExerciseItem users = 3;
+    repeated ExerciseItem items = 3;
 };
 
 service ExercisePoolService {
