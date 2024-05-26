@@ -48,7 +48,7 @@ const (
 	ChatService_ToeflWritingP2Enrich_FullMethodName         = "/chat_completion.ChatService/toefl_writing_p2_enrich"
 	ChatService_ToeflWritingP2Score_FullMethodName          = "/chat_completion.ChatService/toefl_writing_p2_score"
 	ChatService_ToeflWritingP3Enrich_FullMethodName         = "/chat_completion.ChatService/toefl_writing_p3_enrich"
-	ChatService_ToeflWritingP3Score_FullMethodName          = "/chat_completion.ChatService/toefl_writing_p3_score"
+	ChatService_ToeflWritingP3Generate_FullMethodName       = "/chat_completion.ChatService/toefl_writing_p3_generate"
 	ChatService_CnToEn_FullMethodName                       = "/chat_completion.ChatService/cn_to_en"
 	ChatService_EnToCn_FullMethodName                       = "/chat_completion.ChatService/en_to_cn"
 	ChatService_IeltsSpeakingExercise_FullMethodName        = "/chat_completion.ChatService/ielts_speaking_exercise"
@@ -98,7 +98,7 @@ type ChatServiceClient interface {
 	ToeflWritingP2Score(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_ToeflWritingP2ScoreClient, error)
 	// 职场邮件
 	ToeflWritingP3Enrich(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_ToeflWritingP3EnrichClient, error)
-	ToeflWritingP3Score(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_ToeflWritingP3ScoreClient, error)
+	ToeflWritingP3Generate(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_ToeflWritingP3GenerateClient, error)
 	// 中英互译
 	CnToEn(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_CnToEnClient, error)
 	EnToCn(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_EnToCnClient, error)
@@ -997,12 +997,12 @@ func (x *chatServiceToeflWritingP3EnrichClient) Recv() (*ChatMessage, error) {
 	return m, nil
 }
 
-func (c *chatServiceClient) ToeflWritingP3Score(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_ToeflWritingP3ScoreClient, error) {
-	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[27], ChatService_ToeflWritingP3Score_FullMethodName, opts...)
+func (c *chatServiceClient) ToeflWritingP3Generate(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (ChatService_ToeflWritingP3GenerateClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[27], ChatService_ToeflWritingP3Generate_FullMethodName, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &chatServiceToeflWritingP3ScoreClient{stream}
+	x := &chatServiceToeflWritingP3GenerateClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -1012,16 +1012,16 @@ func (c *chatServiceClient) ToeflWritingP3Score(ctx context.Context, in *ChatMes
 	return x, nil
 }
 
-type ChatService_ToeflWritingP3ScoreClient interface {
+type ChatService_ToeflWritingP3GenerateClient interface {
 	Recv() (*ChatMessage, error)
 	grpc.ClientStream
 }
 
-type chatServiceToeflWritingP3ScoreClient struct {
+type chatServiceToeflWritingP3GenerateClient struct {
 	grpc.ClientStream
 }
 
-func (x *chatServiceToeflWritingP3ScoreClient) Recv() (*ChatMessage, error) {
+func (x *chatServiceToeflWritingP3GenerateClient) Recv() (*ChatMessage, error) {
 	m := new(ChatMessage)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -1154,7 +1154,7 @@ type ChatServiceServer interface {
 	ToeflWritingP2Score(*ChatMessage, ChatService_ToeflWritingP2ScoreServer) error
 	// 职场邮件
 	ToeflWritingP3Enrich(*ChatMessage, ChatService_ToeflWritingP3EnrichServer) error
-	ToeflWritingP3Score(*ChatMessage, ChatService_ToeflWritingP3ScoreServer) error
+	ToeflWritingP3Generate(*ChatMessage, ChatService_ToeflWritingP3GenerateServer) error
 	// 中英互译
 	CnToEn(*ChatMessage, ChatService_CnToEnServer) error
 	EnToCn(*ChatMessage, ChatService_EnToCnServer) error
@@ -1256,8 +1256,8 @@ func (UnimplementedChatServiceServer) ToeflWritingP2Score(*ChatMessage, ChatServ
 func (UnimplementedChatServiceServer) ToeflWritingP3Enrich(*ChatMessage, ChatService_ToeflWritingP3EnrichServer) error {
 	return status.Errorf(codes.Unimplemented, "method ToeflWritingP3Enrich not implemented")
 }
-func (UnimplementedChatServiceServer) ToeflWritingP3Score(*ChatMessage, ChatService_ToeflWritingP3ScoreServer) error {
-	return status.Errorf(codes.Unimplemented, "method ToeflWritingP3Score not implemented")
+func (UnimplementedChatServiceServer) ToeflWritingP3Generate(*ChatMessage, ChatService_ToeflWritingP3GenerateServer) error {
+	return status.Errorf(codes.Unimplemented, "method ToeflWritingP3Generate not implemented")
 }
 func (UnimplementedChatServiceServer) CnToEn(*ChatMessage, ChatService_CnToEnServer) error {
 	return status.Errorf(codes.Unimplemented, "method CnToEn not implemented")
@@ -1892,24 +1892,24 @@ func (x *chatServiceToeflWritingP3EnrichServer) Send(m *ChatMessage) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func _ChatService_ToeflWritingP3Score_Handler(srv interface{}, stream grpc.ServerStream) error {
+func _ChatService_ToeflWritingP3Generate_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(ChatMessage)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(ChatServiceServer).ToeflWritingP3Score(m, &chatServiceToeflWritingP3ScoreServer{stream})
+	return srv.(ChatServiceServer).ToeflWritingP3Generate(m, &chatServiceToeflWritingP3GenerateServer{stream})
 }
 
-type ChatService_ToeflWritingP3ScoreServer interface {
+type ChatService_ToeflWritingP3GenerateServer interface {
 	Send(*ChatMessage) error
 	grpc.ServerStream
 }
 
-type chatServiceToeflWritingP3ScoreServer struct {
+type chatServiceToeflWritingP3GenerateServer struct {
 	grpc.ServerStream
 }
 
-func (x *chatServiceToeflWritingP3ScoreServer) Send(m *ChatMessage) error {
+func (x *chatServiceToeflWritingP3GenerateServer) Send(m *ChatMessage) error {
 	return x.ServerStream.SendMsg(m)
 }
 
@@ -2153,8 +2153,8 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 			ServerStreams: true,
 		},
 		{
-			StreamName:    "toefl_writing_p3_score",
-			Handler:       _ChatService_ToeflWritingP3Score_Handler,
+			StreamName:    "toefl_writing_p3_generate",
+			Handler:       _ChatService_ToeflWritingP3Generate_Handler,
 			ServerStreams: true,
 		},
 		{

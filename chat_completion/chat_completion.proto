@@ -42,7 +42,7 @@ service ChatService {
     rpc toefl_writing_p2_score (ChatMessage) returns (stream ChatMessage) {}
     // 职场邮件
     rpc toefl_writing_p3_enrich (ChatMessage) returns (stream ChatMessage) {}
-    rpc toefl_writing_p3_score (ChatMessage) returns (stream ChatMessage) {}
+    rpc toefl_writing_p3_generate (ChatMessage) returns (stream ChatMessage) {}
     // 中英互译
     rpc cn_to_en (ChatMessage) returns (stream ChatMessage) {}
     rpc en_to_cn (ChatMessage) returns (stream ChatMessage) {}
