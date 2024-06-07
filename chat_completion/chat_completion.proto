@@ -56,6 +56,6 @@ message ChatMessage {
     uint64 logid = 1;
     uint64 uid = 2;
     string content = 3;
-    bytes media_buf = 4;
+    uint32 stage = 4;
 };
 
