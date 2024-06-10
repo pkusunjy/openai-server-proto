@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	ExercisePoolService_Get_FullMethodName = "/exercise_pool.ExercisePoolService/get"
 	ExercisePoolService_Set_FullMethodName = "/exercise_pool.ExercisePoolService/set"
+	ExercisePoolService_Del_FullMethodName = "/exercise_pool.ExercisePoolService/del"
 )
 
 // ExercisePoolServiceClient is the client API for ExercisePoolService service.
@@ -29,6 +30,7 @@ const (
 type ExercisePoolServiceClient interface {
 	Get(ctx context.Context, in *ExercisePoolRequest, opts ...grpc.CallOption) (*ExercisePoolResponse, error)
 	Set(ctx context.Context, in *ExercisePoolRequest, opts ...grpc.CallOption) (*ExercisePoolResponse, error)
+	Del(ctx context.Context, in *ExercisePoolRequest, opts ...grpc.CallOption) (*ExercisePoolResponse, error)
 }
 
 type exercisePoolServiceClient struct {
@@ -57,12 +59,22 @@ func (c *exercisePoolServiceClient) Set(ctx context.Context, in *ExercisePoolReq
 	return out, nil
 }
 
+func (c *exercisePoolServiceClient) Del(ctx context.Context, in *ExercisePoolRequest, opts ...grpc.CallOption) (*ExercisePoolResponse, error) {
+	out := new(ExercisePoolResponse)
+	err := c.cc.Invoke(ctx, ExercisePoolService_Del_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ExercisePoolServiceServer is the server API for ExercisePoolService service.
 // All implementations must embed UnimplementedExercisePoolServiceServer
 // for forward compatibility
 type ExercisePoolServiceServer interface {
 	Get(context.Context, *ExercisePoolRequest) (*ExercisePoolResponse, error)
 	Set(context.Context, *ExercisePoolRequest) (*ExercisePoolResponse, error)
+	Del(context.Context, *ExercisePoolRequest) (*ExercisePoolResponse, error)
 	mustEmbedUnimplementedExercisePoolServiceServer()
 }
 
@@ -75,6 +87,9 @@ func (UnimplementedExercisePoolServiceServer) Get(context.Context, *ExercisePool
 }
 func (UnimplementedExercisePoolServiceServer) Set(context.Context, *ExercisePoolRequest) (*ExercisePoolResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Set not implemented")
+}
+func (UnimplementedExercisePoolServiceServer) Del(context.Context, *ExercisePoolRequest) (*ExercisePoolResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Del not implemented")
 }
 func (UnimplementedExercisePoolServiceServer) mustEmbedUnimplementedExercisePoolServiceServer() {}
 
@@ -125,6 +140,24 @@ func _ExercisePoolService_Set_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ExercisePoolService_Del_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExercisePoolRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ExercisePoolServiceServer).Del(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ExercisePoolService_Del_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ExercisePoolServiceServer).Del(ctx, req.(*ExercisePoolRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ExercisePoolService_ServiceDesc is the grpc.ServiceDesc for ExercisePoolService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -139,6 +172,10 @@ var ExercisePoolService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "set",
 			Handler:    _ExercisePoolService_Set_Handler,
+		},
+		{
+			MethodName: "del",
+			Handler:    _ExercisePoolService_Del_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -43,5 +43,6 @@ message ExercisePoolResponse {
 service ExercisePoolService {
     rpc get (ExercisePoolRequest) returns (ExercisePoolResponse) {}
     rpc set (ExercisePoolRequest) returns (ExercisePoolResponse) {}
+    rpc del (ExercisePoolRequest) returns (ExercisePoolResponse) {}
 };
 
