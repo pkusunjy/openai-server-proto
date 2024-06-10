@@ -21,10 +21,11 @@ enum Scene {
 }
 
 message ExerciseItem {
-    string content = 1;
-    string author = 2;
-    uint64 create_time = 3;
-    uint64 expire_time = 4;
+    string title = 1;
+    string content = 2;
+    string author = 3;
+    uint64 create_time = 4;
+    uint64 expire_time = 5;
 };
 
 message ExercisePoolRequest {
