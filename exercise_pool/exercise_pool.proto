@@ -26,6 +26,7 @@ message ExerciseItem {
     string author = 3;
     uint64 create_time = 4;
     uint64 expire_time = 5;
+    repeated uint32 content_index = 6;
 };
 
 message ExercisePoolRequest {
@@ -43,6 +44,7 @@ message ExercisePoolResponse {
 service ExercisePoolService {
     rpc get (ExercisePoolRequest) returns (ExercisePoolResponse) {}
     rpc set (ExercisePoolRequest) returns (ExercisePoolResponse) {}
-    rpc del (ExercisePoolRequest) returns (ExercisePoolResponse) {}
+    rpc del_by_title (ExercisePoolRequest) returns (ExercisePoolResponse) {}
+    rpc del_by_content_index (ExercisePoolRequest) returns (ExercisePoolResponse) {}
 };
 

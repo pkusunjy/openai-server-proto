@@ -19,9 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	ExercisePoolService_Get_FullMethodName = "/exercise_pool.ExercisePoolService/get"
-	ExercisePoolService_Set_FullMethodName = "/exercise_pool.ExercisePoolService/set"
-	ExercisePoolService_Del_FullMethodName = "/exercise_pool.ExercisePoolService/del"
+	ExercisePoolService_Get_FullMethodName               = "/exercise_pool.ExercisePoolService/get"
+	ExercisePoolService_Set_FullMethodName               = "/exercise_pool.ExercisePoolService/set"
+	ExercisePoolService_DelByTitle_FullMethodName        = "/exercise_pool.ExercisePoolService/del_by_title"
+	ExercisePoolService_DelByContentIndex_FullMethodName = "/exercise_pool.ExercisePoolService/del_by_content_index"
 )
 
 // ExercisePoolServiceClient is the client API for ExercisePoolService service.
@@ -30,7 +31,8 @@ const (
 type ExercisePoolServiceClient interface {
 	Get(ctx context.Context, in *ExercisePoolRequest, opts ...grpc.CallOption) (*ExercisePoolResponse, error)
 	Set(ctx context.Context, in *ExercisePoolRequest, opts ...grpc.CallOption) (*ExercisePoolResponse, error)
-	Del(ctx context.Context, in *ExercisePoolRequest, opts ...grpc.CallOption) (*ExercisePoolResponse, error)
+	DelByTitle(ctx context.Context, in *ExercisePoolRequest, opts ...grpc.CallOption) (*ExercisePoolResponse, error)
+	DelByContentIndex(ctx context.Context, in *ExercisePoolRequest, opts ...grpc.CallOption) (*ExercisePoolResponse, error)
 }
 
 type exercisePoolServiceClient struct {
@@ -59,9 +61,18 @@ func (c *exercisePoolServiceClient) Set(ctx context.Context, in *ExercisePoolReq
 	return out, nil
 }
 
-func (c *exercisePoolServiceClient) Del(ctx context.Context, in *ExercisePoolRequest, opts ...grpc.CallOption) (*ExercisePoolResponse, error) {
+func (c *exercisePoolServiceClient) DelByTitle(ctx context.Context, in *ExercisePoolRequest, opts ...grpc.CallOption) (*ExercisePoolResponse, error) {
 	out := new(ExercisePoolResponse)
-	err := c.cc.Invoke(ctx, ExercisePoolService_Del_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, ExercisePoolService_DelByTitle_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *exercisePoolServiceClient) DelByContentIndex(ctx context.Context, in *ExercisePoolRequest, opts ...grpc.CallOption) (*ExercisePoolResponse, error) {
+	out := new(ExercisePoolResponse)
+	err := c.cc.Invoke(ctx, ExercisePoolService_DelByContentIndex_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -74,7 +85,8 @@ func (c *exercisePoolServiceClient) Del(ctx context.Context, in *ExercisePoolReq
 type ExercisePoolServiceServer interface {
 	Get(context.Context, *ExercisePoolRequest) (*ExercisePoolResponse, error)
 	Set(context.Context, *ExercisePoolRequest) (*ExercisePoolResponse, error)
-	Del(context.Context, *ExercisePoolRequest) (*ExercisePoolResponse, error)
+	DelByTitle(context.Context, *ExercisePoolRequest) (*ExercisePoolResponse, error)
+	DelByContentIndex(context.Context, *ExercisePoolRequest) (*ExercisePoolResponse, error)
 	mustEmbedUnimplementedExercisePoolServiceServer()
 }
 
@@ -88,8 +100,11 @@ func (UnimplementedExercisePoolServiceServer) Get(context.Context, *ExercisePool
 func (UnimplementedExercisePoolServiceServer) Set(context.Context, *ExercisePoolRequest) (*ExercisePoolResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Set not implemented")
 }
-func (UnimplementedExercisePoolServiceServer) Del(context.Context, *ExercisePoolRequest) (*ExercisePoolResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Del not implemented")
+func (UnimplementedExercisePoolServiceServer) DelByTitle(context.Context, *ExercisePoolRequest) (*ExercisePoolResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DelByTitle not implemented")
+}
+func (UnimplementedExercisePoolServiceServer) DelByContentIndex(context.Context, *ExercisePoolRequest) (*ExercisePoolResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DelByContentIndex not implemented")
 }
 func (UnimplementedExercisePoolServiceServer) mustEmbedUnimplementedExercisePoolServiceServer() {}
 
@@ -140,20 +155,38 @@ func _ExercisePoolService_Set_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ExercisePoolService_Del_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _ExercisePoolService_DelByTitle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ExercisePoolRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ExercisePoolServiceServer).Del(ctx, in)
+		return srv.(ExercisePoolServiceServer).DelByTitle(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ExercisePoolService_Del_FullMethodName,
+		FullMethod: ExercisePoolService_DelByTitle_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ExercisePoolServiceServer).Del(ctx, req.(*ExercisePoolRequest))
+		return srv.(ExercisePoolServiceServer).DelByTitle(ctx, req.(*ExercisePoolRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ExercisePoolService_DelByContentIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExercisePoolRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ExercisePoolServiceServer).DelByContentIndex(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ExercisePoolService_DelByContentIndex_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ExercisePoolServiceServer).DelByContentIndex(ctx, req.(*ExercisePoolRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -174,8 +207,12 @@ var ExercisePoolService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ExercisePoolService_Set_Handler,
 		},
 		{
-			MethodName: "del",
-			Handler:    _ExercisePoolService_Del_Handler,
+			MethodName: "del_by_title",
+			Handler:    _ExercisePoolService_DelByTitle_Handler,
+		},
+		{
+			MethodName: "del_by_content_index",
+			Handler:    _ExercisePoolService_DelByContentIndex_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

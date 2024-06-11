@@ -83,7 +83,7 @@ func local_request_ExercisePoolService_Set_0(ctx context.Context, marshaler runt
 
 }
 
-func request_ExercisePoolService_Del_0(ctx context.Context, marshaler runtime.Marshaler, client ExercisePoolServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_ExercisePoolService_DelByTitle_0(ctx context.Context, marshaler runtime.Marshaler, client ExercisePoolServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ExercisePoolRequest
 	var metadata runtime.ServerMetadata
 
@@ -91,12 +91,12 @@ func request_ExercisePoolService_Del_0(ctx context.Context, marshaler runtime.Ma
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.Del(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.DelByTitle(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_ExercisePoolService_Del_0(ctx context.Context, marshaler runtime.Marshaler, server ExercisePoolServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_ExercisePoolService_DelByTitle_0(ctx context.Context, marshaler runtime.Marshaler, server ExercisePoolServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ExercisePoolRequest
 	var metadata runtime.ServerMetadata
 
@@ -104,7 +104,33 @@ func local_request_ExercisePoolService_Del_0(ctx context.Context, marshaler runt
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.Del(ctx, &protoReq)
+	msg, err := server.DelByTitle(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_ExercisePoolService_DelByContentIndex_0(ctx context.Context, marshaler runtime.Marshaler, client ExercisePoolServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ExercisePoolRequest
+	var metadata runtime.ServerMetadata
+
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.DelByContentIndex(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_ExercisePoolService_DelByContentIndex_0(ctx context.Context, marshaler runtime.Marshaler, server ExercisePoolServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ExercisePoolRequest
+	var metadata runtime.ServerMetadata
+
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.DelByContentIndex(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -165,7 +191,7 @@ func RegisterExercisePoolServiceHandlerServer(ctx context.Context, mux *runtime.
 
 	})
 
-	mux.Handle("POST", pattern_ExercisePoolService_Del_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_ExercisePoolService_DelByTitle_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -173,12 +199,12 @@ func RegisterExercisePoolServiceHandlerServer(ctx context.Context, mux *runtime.
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/exercise_pool.ExercisePoolService/Del", runtime.WithHTTPPathPattern("/exercise_pool.ExercisePoolService/del"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/exercise_pool.ExercisePoolService/DelByTitle", runtime.WithHTTPPathPattern("/exercise_pool.ExercisePoolService/del_by_title"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_ExercisePoolService_Del_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_ExercisePoolService_DelByTitle_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -186,7 +212,32 @@ func RegisterExercisePoolServiceHandlerServer(ctx context.Context, mux *runtime.
 			return
 		}
 
-		forward_ExercisePoolService_Del_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ExercisePoolService_DelByTitle_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_ExercisePoolService_DelByContentIndex_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/exercise_pool.ExercisePoolService/DelByContentIndex", runtime.WithHTTPPathPattern("/exercise_pool.ExercisePoolService/del_by_content_index"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ExercisePoolService_DelByContentIndex_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ExercisePoolService_DelByContentIndex_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -275,25 +326,47 @@ func RegisterExercisePoolServiceHandlerClient(ctx context.Context, mux *runtime.
 
 	})
 
-	mux.Handle("POST", pattern_ExercisePoolService_Del_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_ExercisePoolService_DelByTitle_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/exercise_pool.ExercisePoolService/Del", runtime.WithHTTPPathPattern("/exercise_pool.ExercisePoolService/del"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/exercise_pool.ExercisePoolService/DelByTitle", runtime.WithHTTPPathPattern("/exercise_pool.ExercisePoolService/del_by_title"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_ExercisePoolService_Del_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_ExercisePoolService_DelByTitle_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_ExercisePoolService_Del_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ExercisePoolService_DelByTitle_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_ExercisePoolService_DelByContentIndex_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/exercise_pool.ExercisePoolService/DelByContentIndex", runtime.WithHTTPPathPattern("/exercise_pool.ExercisePoolService/del_by_content_index"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ExercisePoolService_DelByContentIndex_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ExercisePoolService_DelByContentIndex_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -305,7 +378,9 @@ var (
 
 	pattern_ExercisePoolService_Set_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"exercise_pool.ExercisePoolService", "set"}, ""))
 
-	pattern_ExercisePoolService_Del_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"exercise_pool.ExercisePoolService", "del"}, ""))
+	pattern_ExercisePoolService_DelByTitle_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"exercise_pool.ExercisePoolService", "del_by_title"}, ""))
+
+	pattern_ExercisePoolService_DelByContentIndex_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"exercise_pool.ExercisePoolService", "del_by_content_index"}, ""))
 )
 
 var (
@@ -313,5 +388,7 @@ var (
 
 	forward_ExercisePoolService_Set_0 = runtime.ForwardResponseMessage
 
-	forward_ExercisePoolService_Del_0 = runtime.ForwardResponseMessage
+	forward_ExercisePoolService_DelByTitle_0 = runtime.ForwardResponseMessage
+
+	forward_ExercisePoolService_DelByContentIndex_0 = runtime.ForwardResponseMessage
 )
