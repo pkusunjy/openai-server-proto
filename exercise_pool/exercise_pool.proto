@@ -22,7 +22,7 @@ enum Scene {
 
 message ExerciseItem {
     string title = 1;
-    string content = 2;
+    repeated string content = 2;
     string author = 3;
     uint64 create_time = 4;
     uint64 expire_time = 5;
