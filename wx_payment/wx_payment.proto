@@ -1,0 +1,72 @@
+syntax="proto3";
+package wx_payment;
+option go_package = "github.com/pkusunjy/openai-server-proto/wx_payment";
+
+message NotifyUrlDecodedResponse {
+    string appid = 1;
+    string mchid = 2;
+    string out_order_no = 3;
+    string service_id = 4;
+    string openid = 5;
+    string state = 6;
+    string state_description = 7;
+    int64 total_amount = 8;
+    string service_introduction = 9;
+    message PostPayments {
+        string name = 1;
+        int64 amount = 2;
+        string description = 3;
+        int32 count = 4;
+    };
+    repeated PostPayments post_payments = 10;
+    message PostDiscounts {
+        string name = 1;
+        string description = 2;
+        int64 amount = 3;
+    };
+    repeated PostDiscounts post_discounts = 11;
+    message RiskFund {
+        string name = 1;
+        int64 amount = 2;
+        string description = 3;
+    };
+    RiskFund risk_fund = 12;
+    message TimeRange {
+        string start_time = 1;
+        string start_time_remark = 2;
+        string end_time = 3;
+        string end_time_remark = 4;
+    };
+    TimeRange time_range = 13;
+    message Location {
+        string start_location = 1;
+        string end_location = 2;
+    };
+    Location location = 14;
+    string attach = 15;
+    string notify_url = 16;
+    string order_id = 17;
+};
+
+message NotifyUrlRequest {
+    string id = 1;
+    string create_time = 2;
+    string event_type = 3;
+    string resource_type = 4;
+    message NotifyUrlResource {
+        string algorithm = 1;
+        string ciphertext = 2;
+        string associated_data = 3;
+        string nonce = 4;
+    };
+    NotifyUrlResource resource = 5;
+    string summary = 6;
+};
+
+message NotifyUrlResponse {
+};
+
+service WxPaymentService {
+    rpc notify_url (NotifyUrlRequest) returns (NotifyUrlResponse) {}
+};
+

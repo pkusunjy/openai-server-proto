@@ -1,5 +1,5 @@
-load("@rules_proto//proto:defs.bzl", "proto_library")
 load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
 
 package(
     default_visibility = ["//visibility:public"],
@@ -75,4 +75,22 @@ cc_grpc_library(
     srcs = [":user_proto"],
     grpc_only = True,
     deps = [":user_cc_proto"],
+)
+
+# wx_payment
+proto_library(
+    name = "wx_payment_proto",
+    srcs = ["wx_payment/wx_payment.proto"],
+)
+
+cc_proto_library(
+    name = "wx_payment_cc_proto",
+    deps = [":wx_payment_proto"],
+)
+
+cc_grpc_library(
+    name = "wx_payment_cc_grpc",
+    srcs = [":wx_payment_proto"],
+    grpc_only = True,
+    deps = [":wx_payment_cc_proto"],
 )
