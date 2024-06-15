@@ -31,7 +31,7 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 
-func request_WxPaymentService_NotifyUrl_0(ctx context.Context, marshaler runtime.Marshaler, client WxPaymentServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_NotifyService_JsapiNotifyUrl_0(ctx context.Context, marshaler runtime.Marshaler, client NotifyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq NotifyUrlRequest
 	var metadata runtime.ServerMetadata
 
@@ -39,12 +39,12 @@ func request_WxPaymentService_NotifyUrl_0(ctx context.Context, marshaler runtime
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.NotifyUrl(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.JsapiNotifyUrl(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_WxPaymentService_NotifyUrl_0(ctx context.Context, marshaler runtime.Marshaler, server WxPaymentServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_NotifyService_JsapiNotifyUrl_0(ctx context.Context, marshaler runtime.Marshaler, server NotifyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq NotifyUrlRequest
 	var metadata runtime.ServerMetadata
 
@@ -52,9 +52,69 @@ func local_request_WxPaymentService_NotifyUrl_0(ctx context.Context, marshaler r
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.NotifyUrl(ctx, &protoReq)
+	msg, err := server.JsapiNotifyUrl(ctx, &protoReq)
 	return msg, metadata, err
 
+}
+
+func request_WxPaymentService_Jsapi_0(ctx context.Context, marshaler runtime.Marshaler, client WxPaymentServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq JsApiRequest
+	var metadata runtime.ServerMetadata
+
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.Jsapi(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_WxPaymentService_Jsapi_0(ctx context.Context, marshaler runtime.Marshaler, server WxPaymentServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq JsApiRequest
+	var metadata runtime.ServerMetadata
+
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.Jsapi(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+// RegisterNotifyServiceHandlerServer registers the http handlers for service NotifyService to "mux".
+// UnaryRPC     :call NotifyServiceServer directly.
+// StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
+// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterNotifyServiceHandlerFromEndpoint instead.
+func RegisterNotifyServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server NotifyServiceServer) error {
+
+	mux.Handle("POST", pattern_NotifyService_JsapiNotifyUrl_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/wx_payment.NotifyService/JsapiNotifyUrl", runtime.WithHTTPPathPattern("/wx_payment.NotifyService/jsapi_notify_url"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_NotifyService_JsapiNotifyUrl_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_NotifyService_JsapiNotifyUrl_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	return nil
 }
 
 // RegisterWxPaymentServiceHandlerServer registers the http handlers for service WxPaymentService to "mux".
@@ -63,7 +123,7 @@ func local_request_WxPaymentService_NotifyUrl_0(ctx context.Context, marshaler r
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterWxPaymentServiceHandlerFromEndpoint instead.
 func RegisterWxPaymentServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server WxPaymentServiceServer) error {
 
-	mux.Handle("POST", pattern_WxPaymentService_NotifyUrl_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_WxPaymentService_Jsapi_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -71,12 +131,12 @@ func RegisterWxPaymentServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/wx_payment.WxPaymentService/NotifyUrl", runtime.WithHTTPPathPattern("/wx_payment.WxPaymentService/notify_url"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/wx_payment.WxPaymentService/Jsapi", runtime.WithHTTPPathPattern("/wx_payment.WxPaymentService/jsapi"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_WxPaymentService_NotifyUrl_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_WxPaymentService_Jsapi_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -84,31 +144,102 @@ func RegisterWxPaymentServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 			return
 		}
 
-		forward_WxPaymentService_NotifyUrl_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_WxPaymentService_Jsapi_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
 	return nil
 }
 
-// RegisterWxPaymentServiceHandlerFromEndpoint is same as RegisterWxPaymentServiceHandler but
+// RegisterNotifyServiceHandlerFromEndpoint is same as RegisterNotifyServiceHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func RegisterWxPaymentServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
-	conn, err := grpc.DialContext(ctx, endpoint, opts...)
+func RegisterNotifyServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+	conn, err := grpc.NewClient(endpoint, opts...)
 	if err != nil {
 		return err
 	}
 	defer func() {
 		if err != nil {
 			if cerr := conn.Close(); cerr != nil {
-				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+				grpclog.Errorf("Failed to close conn to %s: %v", endpoint, cerr)
 			}
 			return
 		}
 		go func() {
 			<-ctx.Done()
 			if cerr := conn.Close(); cerr != nil {
-				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+				grpclog.Errorf("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+		}()
+	}()
+
+	return RegisterNotifyServiceHandler(ctx, mux, conn)
+}
+
+// RegisterNotifyServiceHandler registers the http handlers for service NotifyService to "mux".
+// The handlers forward requests to the grpc endpoint over "conn".
+func RegisterNotifyServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterNotifyServiceHandlerClient(ctx, mux, NewNotifyServiceClient(conn))
+}
+
+// RegisterNotifyServiceHandlerClient registers the http handlers for service NotifyService
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "NotifyServiceClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "NotifyServiceClient"
+// doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
+// "NotifyServiceClient" to call the correct interceptors.
+func RegisterNotifyServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client NotifyServiceClient) error {
+
+	mux.Handle("POST", pattern_NotifyService_JsapiNotifyUrl_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/wx_payment.NotifyService/JsapiNotifyUrl", runtime.WithHTTPPathPattern("/wx_payment.NotifyService/jsapi_notify_url"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_NotifyService_JsapiNotifyUrl_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_NotifyService_JsapiNotifyUrl_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	return nil
+}
+
+var (
+	pattern_NotifyService_JsapiNotifyUrl_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"wx_payment.NotifyService", "jsapi_notify_url"}, ""))
+)
+
+var (
+	forward_NotifyService_JsapiNotifyUrl_0 = runtime.ForwardResponseMessage
+)
+
+// RegisterWxPaymentServiceHandlerFromEndpoint is same as RegisterWxPaymentServiceHandler but
+// automatically dials to "endpoint" and closes the connection when "ctx" gets done.
+func RegisterWxPaymentServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+	conn, err := grpc.NewClient(endpoint, opts...)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err != nil {
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Errorf("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+			return
+		}
+		go func() {
+			<-ctx.Done()
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Errorf("Failed to close conn to %s: %v", endpoint, cerr)
 			}
 		}()
 	}()
@@ -129,25 +260,25 @@ func RegisterWxPaymentServiceHandler(ctx context.Context, mux *runtime.ServeMux,
 // "WxPaymentServiceClient" to call the correct interceptors.
 func RegisterWxPaymentServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client WxPaymentServiceClient) error {
 
-	mux.Handle("POST", pattern_WxPaymentService_NotifyUrl_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_WxPaymentService_Jsapi_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/wx_payment.WxPaymentService/NotifyUrl", runtime.WithHTTPPathPattern("/wx_payment.WxPaymentService/notify_url"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/wx_payment.WxPaymentService/Jsapi", runtime.WithHTTPPathPattern("/wx_payment.WxPaymentService/jsapi"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_WxPaymentService_NotifyUrl_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_WxPaymentService_Jsapi_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_WxPaymentService_NotifyUrl_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_WxPaymentService_Jsapi_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -155,9 +286,9 @@ func RegisterWxPaymentServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 }
 
 var (
-	pattern_WxPaymentService_NotifyUrl_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"wx_payment.WxPaymentService", "notify_url"}, ""))
+	pattern_WxPaymentService_Jsapi_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"wx_payment.WxPaymentService", "jsapi"}, ""))
 )
 
 var (
-	forward_WxPaymentService_NotifyUrl_0 = runtime.ForwardResponseMessage
+	forward_WxPaymentService_Jsapi_0 = runtime.ForwardResponseMessage
 )
