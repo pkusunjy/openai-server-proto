@@ -72,6 +72,7 @@ service NotifyService {
 
 message JsApiRequest {
     string openid = 1;
+    uint64 amount = 2; // 订单金额，单位是分
 };
 
 message JsApiResponse {
