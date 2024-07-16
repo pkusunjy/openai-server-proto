@@ -73,6 +73,7 @@ service NotifyService {
 message JsApiRequest {
     string openid = 1;
     uint64 amount = 2; // 订单金额，单位是分
+    int32 data_platform_order_type = 3; // 后台透传orderType
 };
 
 message JsApiResponse {
