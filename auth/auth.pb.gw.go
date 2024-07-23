@@ -84,7 +84,7 @@ func local_request_AuthService_GetOssToken_0(ctx context.Context, marshaler runt
 }
 
 func request_AuthService_Jscode2Session_0(ctx context.Context, marshaler runtime.Marshaler, client AuthServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq AuthRequest
+	var protoReq Code2SessionRequest
 	var metadata runtime.ServerMetadata
 
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
@@ -97,7 +97,7 @@ func request_AuthService_Jscode2Session_0(ctx context.Context, marshaler runtime
 }
 
 func local_request_AuthService_Jscode2Session_0(ctx context.Context, marshaler runtime.Marshaler, server AuthServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq AuthRequest
+	var protoReq Code2SessionRequest
 	var metadata runtime.ServerMetadata
 
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {

@@ -30,7 +30,7 @@ const (
 type AuthServiceClient interface {
 	GetWxMiniprogramToken(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*AuthResponse, error)
 	GetOssToken(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*AuthResponse, error)
-	Jscode2Session(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*AuthResponse, error)
+	Jscode2Session(ctx context.Context, in *Code2SessionRequest, opts ...grpc.CallOption) (*Code2SessionResponse, error)
 }
 
 type authServiceClient struct {
@@ -59,8 +59,8 @@ func (c *authServiceClient) GetOssToken(ctx context.Context, in *AuthRequest, op
 	return out, nil
 }
 
-func (c *authServiceClient) Jscode2Session(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*AuthResponse, error) {
-	out := new(AuthResponse)
+func (c *authServiceClient) Jscode2Session(ctx context.Context, in *Code2SessionRequest, opts ...grpc.CallOption) (*Code2SessionResponse, error) {
+	out := new(Code2SessionResponse)
 	err := c.cc.Invoke(ctx, AuthService_Jscode2Session_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -74,7 +74,7 @@ func (c *authServiceClient) Jscode2Session(ctx context.Context, in *AuthRequest,
 type AuthServiceServer interface {
 	GetWxMiniprogramToken(context.Context, *AuthRequest) (*AuthResponse, error)
 	GetOssToken(context.Context, *AuthRequest) (*AuthResponse, error)
-	Jscode2Session(context.Context, *AuthRequest) (*AuthResponse, error)
+	Jscode2Session(context.Context, *Code2SessionRequest) (*Code2SessionResponse, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }
 
@@ -88,7 +88,7 @@ func (UnimplementedAuthServiceServer) GetWxMiniprogramToken(context.Context, *Au
 func (UnimplementedAuthServiceServer) GetOssToken(context.Context, *AuthRequest) (*AuthResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOssToken not implemented")
 }
-func (UnimplementedAuthServiceServer) Jscode2Session(context.Context, *AuthRequest) (*AuthResponse, error) {
+func (UnimplementedAuthServiceServer) Jscode2Session(context.Context, *Code2SessionRequest) (*Code2SessionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Jscode2Session not implemented")
 }
 func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
@@ -141,7 +141,7 @@ func _AuthService_GetOssToken_Handler(srv interface{}, ctx context.Context, dec 
 }
 
 func _AuthService_Jscode2Session_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AuthRequest)
+	in := new(Code2SessionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -153,7 +153,7 @@ func _AuthService_Jscode2Session_Handler(srv interface{}, ctx context.Context, d
 		FullMethod: AuthService_Jscode2Session_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).Jscode2Session(ctx, req.(*AuthRequest))
+		return srv.(AuthServiceServer).Jscode2Session(ctx, req.(*Code2SessionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
