@@ -3,7 +3,7 @@ package auth;
 option go_package = "github.com/pkusunjy/openai-server-proto/auth";
 
 message AuthRequest {
-
+    string code = 1;
 };
 
 message AuthResponse {
@@ -12,10 +12,14 @@ message AuthResponse {
     string oss_endpoint = 3;
     string oss_access_key_id = 4;
     string oss_access_key_secret = 5;
+    string openid = 6;
+    string session_key = 7;
+    string unionid = 8;
 };
 
 service AuthService {
     rpc get_wx_miniprogram_token (AuthRequest) returns (AuthResponse) {}
     rpc get_oss_token (AuthRequest) returns (AuthResponse) {}
+    rpc jscode2session (AuthRequest) returns (AuthResponse) {}
 };
 
