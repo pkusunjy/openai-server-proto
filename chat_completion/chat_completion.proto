@@ -55,7 +55,7 @@ service ChatService {
 
 message ChatMessage {
     uint64 logid = 1;
-    uint64 uid = 2;
+    string userid = 2;
     string content = 3;
     uint32 stage = 4;
 };
