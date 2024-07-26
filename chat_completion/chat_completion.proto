@@ -7,6 +7,7 @@ service ChatService {
     rpc chat (stream ChatMessage) returns (stream ChatMessage) {}
     rpc write_article_by_title (ChatMessage) returns (stream ChatMessage) {}
     rpc transcribe_judge (ChatMessage) returns (ChatMessage) {}
+    rpc text_to_speech (ChatMessage) returns (ChatMessage) {}
     // 雅思口语P1
     rpc ielts_speaking_p1_generate (ChatMessage) returns (stream ChatMessage) {}
     rpc ielts_speaking_p1_enrich (ChatMessage) returns (stream ChatMessage) {}
