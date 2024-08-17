@@ -51,6 +51,8 @@ service ChatService {
     rpc ielts_speaking_exercise (ChatMessage) returns (ChatMessage) {}
     // 雅思口语模考
     rpc ielts_speaking_exam (ChatMessage) returns (ChatMessage) {}
+    // 雅思对话报告
+    rpc ielts_talk_report (ChatMessage) returns (ChatMessage) {}
 };
 
 message ChatMessage {
