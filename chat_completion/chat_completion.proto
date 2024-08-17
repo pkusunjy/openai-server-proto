@@ -51,8 +51,10 @@ service ChatService {
     rpc ielts_speaking_exercise (ChatMessage) returns (ChatMessage) {}
     // 雅思口语模考
     rpc ielts_speaking_exam (ChatMessage) returns (ChatMessage) {}
-    // 雅思对话报告
-    rpc ielts_talk_report (ChatMessage) returns (ChatMessage) {}
+    // 雅思对话报告-for gateway
+    rpc ielts_talk_report (QueryExamAnswerListRequest) returns (TalkReport) {}
+    // 雅思对话报告-for grpc
+    rpc ielts_talk_report_impl (QueryExamAnswerListResponse) returns (TalkReport) {}
 };
 
 message ChatMessage {
@@ -62,3 +64,28 @@ message ChatMessage {
     uint32 stage = 4;
 };
 
+message QueryExamAnswerListRequest {
+    repeated string paperIds = 1;
+    string username = 2;
+};
+
+message QuestionAndAnswerPair {
+    string question = 1;
+    string answer = 2;
+};
+
+message QueryExamAnswerListResponse {
+    repeated QuestionAndAnswerPair answerList = 1;
+}
+
+message TalkReport {
+    string overall_score = 1;
+    message ScoreAndComment {
+        string detailed_score = 1;
+        string comment = 2;
+    };
+    ScoreAndComment fluency_coherence = 2;
+    ScoreAndComment pronunciation = 3;
+    ScoreAndComment grammer = 4;
+    ScoreAndComment vocabulary = 5;
+};
