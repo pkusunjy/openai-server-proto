@@ -840,7 +840,7 @@ func local_request_ChatService_IeltsTalkReport_0(ctx context.Context, marshaler 
 }
 
 func request_ChatService_IeltsTalkReportImpl_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryExamAnswerListResponse
+	var protoReq ExamAnswerList
 	var metadata runtime.ServerMetadata
 
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
@@ -853,7 +853,7 @@ func request_ChatService_IeltsTalkReportImpl_0(ctx context.Context, marshaler ru
 }
 
 func local_request_ChatService_IeltsTalkReportImpl_0(ctx context.Context, marshaler runtime.Marshaler, server ChatServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryExamAnswerListResponse
+	var protoReq ExamAnswerList
 	var metadata runtime.ServerMetadata
 
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {

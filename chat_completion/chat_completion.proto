@@ -54,7 +54,7 @@ service ChatService {
     // 雅思对话报告-for gateway
     rpc ielts_talk_report (QueryExamAnswerListRequest) returns (TalkReport) {}
     // 雅思对话报告-for grpc
-    rpc ielts_talk_report_impl (QueryExamAnswerListResponse) returns (TalkReport) {}
+    rpc ielts_talk_report_impl (ExamAnswerList) returns (TalkReport) {}
 };
 
 message ChatMessage {
@@ -64,19 +64,25 @@ message ChatMessage {
     uint32 stage = 4;
 };
 
+message QuestionAndAnswerPair {
+    string contentText = 1;
+    string answer = 2;
+};
+
+message ExamAnswerList {
+    repeated QuestionAndAnswerPair answerList = 1;
+};
+
 message QueryExamAnswerListRequest {
     repeated string paperIds = 1;
     string username = 2;
 };
 
-message QuestionAndAnswerPair {
-    string question = 1;
-    string answer = 2;
+message QueryExamAnswerListResponse {
+    string status = 1;
+    repeated ExamAnswerList data = 2;
 };
 
-message QueryExamAnswerListResponse {
-    repeated QuestionAndAnswerPair answerList = 1;
-}
 
 message TalkReport {
     string overall_score = 1;

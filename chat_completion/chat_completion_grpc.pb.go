@@ -113,7 +113,7 @@ type ChatServiceClient interface {
 	// 雅思对话报告-for gateway
 	IeltsTalkReport(ctx context.Context, in *QueryExamAnswerListRequest, opts ...grpc.CallOption) (*TalkReport, error)
 	// 雅思对话报告-for grpc
-	IeltsTalkReportImpl(ctx context.Context, in *QueryExamAnswerListResponse, opts ...grpc.CallOption) (*TalkReport, error)
+	IeltsTalkReportImpl(ctx context.Context, in *ExamAnswerList, opts ...grpc.CallOption) (*TalkReport, error)
 }
 
 type chatServiceClient struct {
@@ -748,7 +748,7 @@ func (c *chatServiceClient) IeltsTalkReport(ctx context.Context, in *QueryExamAn
 	return out, nil
 }
 
-func (c *chatServiceClient) IeltsTalkReportImpl(ctx context.Context, in *QueryExamAnswerListResponse, opts ...grpc.CallOption) (*TalkReport, error) {
+func (c *chatServiceClient) IeltsTalkReportImpl(ctx context.Context, in *ExamAnswerList, opts ...grpc.CallOption) (*TalkReport, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(TalkReport)
 	err := c.cc.Invoke(ctx, ChatService_IeltsTalkReportImpl_FullMethodName, in, out, cOpts...)
@@ -813,7 +813,7 @@ type ChatServiceServer interface {
 	// 雅思对话报告-for gateway
 	IeltsTalkReport(context.Context, *QueryExamAnswerListRequest) (*TalkReport, error)
 	// 雅思对话报告-for grpc
-	IeltsTalkReportImpl(context.Context, *QueryExamAnswerListResponse) (*TalkReport, error)
+	IeltsTalkReportImpl(context.Context, *ExamAnswerList) (*TalkReport, error)
 	mustEmbedUnimplementedChatServiceServer()
 }
 
@@ -932,7 +932,7 @@ func (UnimplementedChatServiceServer) IeltsSpeakingExam(context.Context, *ChatMe
 func (UnimplementedChatServiceServer) IeltsTalkReport(context.Context, *QueryExamAnswerListRequest) (*TalkReport, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method IeltsTalkReport not implemented")
 }
-func (UnimplementedChatServiceServer) IeltsTalkReportImpl(context.Context, *QueryExamAnswerListResponse) (*TalkReport, error) {
+func (UnimplementedChatServiceServer) IeltsTalkReportImpl(context.Context, *ExamAnswerList) (*TalkReport, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method IeltsTalkReportImpl not implemented")
 }
 func (UnimplementedChatServiceServer) mustEmbedUnimplementedChatServiceServer() {}
@@ -1391,7 +1391,7 @@ func _ChatService_IeltsTalkReport_Handler(srv interface{}, ctx context.Context, 
 }
 
 func _ChatService_IeltsTalkReportImpl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryExamAnswerListResponse)
+	in := new(ExamAnswerList)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1403,7 +1403,7 @@ func _ChatService_IeltsTalkReportImpl_Handler(srv interface{}, ctx context.Conte
 		FullMethod: ChatService_IeltsTalkReportImpl_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ChatServiceServer).IeltsTalkReportImpl(ctx, req.(*QueryExamAnswerListResponse))
+		return srv.(ChatServiceServer).IeltsTalkReportImpl(ctx, req.(*ExamAnswerList))
 	}
 	return interceptor(ctx, in, info, handler)
 }
