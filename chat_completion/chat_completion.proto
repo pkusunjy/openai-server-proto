@@ -51,10 +51,13 @@ service ChatService {
     rpc ielts_speaking_exercise (ChatMessage) returns (ChatMessage) {}
     // 雅思口语模考
     rpc ielts_speaking_exam (ChatMessage) returns (ChatMessage) {}
-    // 雅思对话报告-for gateway
-    rpc ielts_talk_report (QueryExamAnswerListRequest) returns (TalkReport) {}
     // 雅思对话报告-for grpc
     rpc ielts_talk_report_impl (ExamAnswerList) returns (TalkReport) {}
+};
+
+service ReportService {
+    // 雅思对话报告-for gateway
+    rpc ielts_talk_report (QueryExamAnswerListRequest) returns (TalkReport) {}
 };
 
 message ChatMessage {

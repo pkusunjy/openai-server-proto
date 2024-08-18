@@ -54,7 +54,6 @@ const (
 	ChatService_EnToCn_FullMethodName                       = "/chat_completion.ChatService/en_to_cn"
 	ChatService_IeltsSpeakingExercise_FullMethodName        = "/chat_completion.ChatService/ielts_speaking_exercise"
 	ChatService_IeltsSpeakingExam_FullMethodName            = "/chat_completion.ChatService/ielts_speaking_exam"
-	ChatService_IeltsTalkReport_FullMethodName              = "/chat_completion.ChatService/ielts_talk_report"
 	ChatService_IeltsTalkReportImpl_FullMethodName          = "/chat_completion.ChatService/ielts_talk_report_impl"
 )
 
@@ -110,8 +109,6 @@ type ChatServiceClient interface {
 	IeltsSpeakingExercise(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (*ChatMessage, error)
 	// 雅思口语模考
 	IeltsSpeakingExam(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (*ChatMessage, error)
-	// 雅思对话报告-for gateway
-	IeltsTalkReport(ctx context.Context, in *QueryExamAnswerListRequest, opts ...grpc.CallOption) (*TalkReport, error)
 	// 雅思对话报告-for grpc
 	IeltsTalkReportImpl(ctx context.Context, in *ExamAnswerList, opts ...grpc.CallOption) (*TalkReport, error)
 }
@@ -738,16 +735,6 @@ func (c *chatServiceClient) IeltsSpeakingExam(ctx context.Context, in *ChatMessa
 	return out, nil
 }
 
-func (c *chatServiceClient) IeltsTalkReport(ctx context.Context, in *QueryExamAnswerListRequest, opts ...grpc.CallOption) (*TalkReport, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(TalkReport)
-	err := c.cc.Invoke(ctx, ChatService_IeltsTalkReport_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *chatServiceClient) IeltsTalkReportImpl(ctx context.Context, in *ExamAnswerList, opts ...grpc.CallOption) (*TalkReport, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(TalkReport)
@@ -810,8 +797,6 @@ type ChatServiceServer interface {
 	IeltsSpeakingExercise(context.Context, *ChatMessage) (*ChatMessage, error)
 	// 雅思口语模考
 	IeltsSpeakingExam(context.Context, *ChatMessage) (*ChatMessage, error)
-	// 雅思对话报告-for gateway
-	IeltsTalkReport(context.Context, *QueryExamAnswerListRequest) (*TalkReport, error)
 	// 雅思对话报告-for grpc
 	IeltsTalkReportImpl(context.Context, *ExamAnswerList) (*TalkReport, error)
 	mustEmbedUnimplementedChatServiceServer()
@@ -928,9 +913,6 @@ func (UnimplementedChatServiceServer) IeltsSpeakingExercise(context.Context, *Ch
 }
 func (UnimplementedChatServiceServer) IeltsSpeakingExam(context.Context, *ChatMessage) (*ChatMessage, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method IeltsSpeakingExam not implemented")
-}
-func (UnimplementedChatServiceServer) IeltsTalkReport(context.Context, *QueryExamAnswerListRequest) (*TalkReport, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method IeltsTalkReport not implemented")
 }
 func (UnimplementedChatServiceServer) IeltsTalkReportImpl(context.Context, *ExamAnswerList) (*TalkReport, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method IeltsTalkReportImpl not implemented")
@@ -1372,24 +1354,6 @@ func _ChatService_IeltsSpeakingExam_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ChatService_IeltsTalkReport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryExamAnswerListRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ChatServiceServer).IeltsTalkReport(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ChatService_IeltsTalkReport_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ChatServiceServer).IeltsTalkReport(ctx, req.(*QueryExamAnswerListRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _ChatService_IeltsTalkReportImpl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ExamAnswerList)
 	if err := dec(in); err != nil {
@@ -1434,10 +1398,6 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ielts_speaking_exam",
 			Handler:    _ChatService_IeltsSpeakingExam_Handler,
-		},
-		{
-			MethodName: "ielts_talk_report",
-			Handler:    _ChatService_IeltsTalkReport_Handler,
 		},
 		{
 			MethodName: "ielts_talk_report_impl",
@@ -1597,5 +1557,109 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 			ServerStreams: true,
 		},
 	},
+	Metadata: "chat_completion/chat_completion.proto",
+}
+
+const (
+	ReportService_IeltsTalkReport_FullMethodName = "/chat_completion.ReportService/ielts_talk_report"
+)
+
+// ReportServiceClient is the client API for ReportService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type ReportServiceClient interface {
+	// 雅思对话报告-for gateway
+	IeltsTalkReport(ctx context.Context, in *QueryExamAnswerListRequest, opts ...grpc.CallOption) (*TalkReport, error)
+}
+
+type reportServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewReportServiceClient(cc grpc.ClientConnInterface) ReportServiceClient {
+	return &reportServiceClient{cc}
+}
+
+func (c *reportServiceClient) IeltsTalkReport(ctx context.Context, in *QueryExamAnswerListRequest, opts ...grpc.CallOption) (*TalkReport, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(TalkReport)
+	err := c.cc.Invoke(ctx, ReportService_IeltsTalkReport_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// ReportServiceServer is the server API for ReportService service.
+// All implementations must embed UnimplementedReportServiceServer
+// for forward compatibility.
+type ReportServiceServer interface {
+	// 雅思对话报告-for gateway
+	IeltsTalkReport(context.Context, *QueryExamAnswerListRequest) (*TalkReport, error)
+	mustEmbedUnimplementedReportServiceServer()
+}
+
+// UnimplementedReportServiceServer must be embedded to have
+// forward compatible implementations.
+//
+// NOTE: this should be embedded by value instead of pointer to avoid a nil
+// pointer dereference when methods are called.
+type UnimplementedReportServiceServer struct{}
+
+func (UnimplementedReportServiceServer) IeltsTalkReport(context.Context, *QueryExamAnswerListRequest) (*TalkReport, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method IeltsTalkReport not implemented")
+}
+func (UnimplementedReportServiceServer) mustEmbedUnimplementedReportServiceServer() {}
+func (UnimplementedReportServiceServer) testEmbeddedByValue()                       {}
+
+// UnsafeReportServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ReportServiceServer will
+// result in compilation errors.
+type UnsafeReportServiceServer interface {
+	mustEmbedUnimplementedReportServiceServer()
+}
+
+func RegisterReportServiceServer(s grpc.ServiceRegistrar, srv ReportServiceServer) {
+	// If the following call pancis, it indicates UnimplementedReportServiceServer was
+	// embedded by pointer and is nil.  This will cause panics if an
+	// unimplemented method is ever invoked, so we test this at initialization
+	// time to prevent it from happening at runtime later due to I/O.
+	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
+		t.testEmbeddedByValue()
+	}
+	s.RegisterService(&ReportService_ServiceDesc, srv)
+}
+
+func _ReportService_IeltsTalkReport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryExamAnswerListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ReportServiceServer).IeltsTalkReport(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ReportService_IeltsTalkReport_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ReportServiceServer).IeltsTalkReport(ctx, req.(*QueryExamAnswerListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// ReportService_ServiceDesc is the grpc.ServiceDesc for ReportService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var ReportService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "chat_completion.ReportService",
+	HandlerType: (*ReportServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "ielts_talk_report",
+			Handler:    _ReportService_IeltsTalkReport_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
 	Metadata: "chat_completion/chat_completion.proto",
 }
