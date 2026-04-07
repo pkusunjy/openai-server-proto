@@ -10,6 +10,7 @@ package chat_completion
 
 import (
 	"context"
+	"errors"
 	"io"
 	"net/http"
 
@@ -24,37 +25,41 @@ import (
 )
 
 // Suppress "imported and not used" errors
-var _ codes.Code
-var _ io.Reader
-var _ status.Status
-var _ = runtime.String
-var _ = utilities.NewDoubleArray
-var _ = metadata.Join
+var (
+	_ codes.Code
+	_ io.Reader
+	_ status.Status
+	_ = errors.New
+	_ = runtime.String
+	_ = utilities.NewDoubleArray
+	_ = metadata.Join
+)
 
 func request_ChatService_Ask_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	msg, err := client.Ask(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_ChatService_Ask_0(ctx context.Context, marshaler runtime.Marshaler, server ChatServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.Ask(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_ChatService_Chat_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_ChatClient, runtime.ServerMetadata, error) {
@@ -68,12 +73,12 @@ func request_ChatService_Chat_0(ctx context.Context, marshaler runtime.Marshaler
 	handleSend := func() error {
 		var protoReq ChatMessage
 		err := dec.Decode(&protoReq)
-		if err == io.EOF {
+		if errors.Is(err, io.EOF) {
 			return err
 		}
 		if err != nil {
 			grpclog.Errorf("Failed to decode request: %v", err)
-			return err
+			return status.Errorf(codes.InvalidArgument, "Failed to decode request: %v", err)
 		}
 		if err := stream.Send(&protoReq); err != nil {
 			grpclog.Errorf("Failed to send request: %v", err)
@@ -101,13 +106,16 @@ func request_ChatService_Chat_0(ctx context.Context, marshaler runtime.Marshaler
 }
 
 func request_ChatService_WriteArticleByTitle_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_WriteArticleByTitleClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.WriteArticleByTitle(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -118,69 +126,46 @@ func request_ChatService_WriteArticleByTitle_0(ctx context.Context, marshaler ru
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_TranscribeJudge_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	msg, err := client.TranscribeJudge(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_ChatService_TranscribeJudge_0(ctx context.Context, marshaler runtime.Marshaler, server ChatServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.TranscribeJudge(ctx, &protoReq)
 	return msg, metadata, err
-
-}
-
-func request_ChatService_TextToSpeech_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-
-	msg, err := client.TextToSpeech(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
-
-}
-
-func local_request_ChatService_TextToSpeech_0(ctx context.Context, marshaler runtime.Marshaler, server ChatServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-
-	msg, err := server.TextToSpeech(ctx, &protoReq)
-	return msg, metadata, err
-
 }
 
 func request_ChatService_IeltsSpeakingP1Generate_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_IeltsSpeakingP1GenerateClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.IeltsSpeakingP1Generate(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -191,17 +176,19 @@ func request_ChatService_IeltsSpeakingP1Generate_0(ctx context.Context, marshale
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_IeltsSpeakingP1Enrich_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_IeltsSpeakingP1EnrichClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.IeltsSpeakingP1Enrich(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -212,17 +199,19 @@ func request_ChatService_IeltsSpeakingP1Enrich_0(ctx context.Context, marshaler 
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_IeltsSpeakingP2Generate_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_IeltsSpeakingP2GenerateClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.IeltsSpeakingP2Generate(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -233,17 +222,19 @@ func request_ChatService_IeltsSpeakingP2Generate_0(ctx context.Context, marshale
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_IeltsSpeakingP2Enrich_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_IeltsSpeakingP2EnrichClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.IeltsSpeakingP2Enrich(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -254,17 +245,19 @@ func request_ChatService_IeltsSpeakingP2Enrich_0(ctx context.Context, marshaler 
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_IeltsSpeakingP2Score_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_IeltsSpeakingP2ScoreClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.IeltsSpeakingP2Score(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -275,17 +268,19 @@ func request_ChatService_IeltsSpeakingP2Score_0(ctx context.Context, marshaler r
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_IeltsSpeakingP3Generate_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_IeltsSpeakingP3GenerateClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.IeltsSpeakingP3Generate(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -296,17 +291,19 @@ func request_ChatService_IeltsSpeakingP3Generate_0(ctx context.Context, marshale
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_IeltsSpeakingP3Enrich_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_IeltsSpeakingP3EnrichClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.IeltsSpeakingP3Enrich(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -317,17 +314,19 @@ func request_ChatService_IeltsSpeakingP3Enrich_0(ctx context.Context, marshaler 
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_IeltsWritingT1Enrich_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_IeltsWritingT1EnrichClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.IeltsWritingT1Enrich(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -338,17 +337,19 @@ func request_ChatService_IeltsWritingT1Enrich_0(ctx context.Context, marshaler r
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_IeltsWritingT1Score_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_IeltsWritingT1ScoreClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.IeltsWritingT1Score(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -359,17 +360,19 @@ func request_ChatService_IeltsWritingT1Score_0(ctx context.Context, marshaler ru
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_IeltsWritingT2Generate_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_IeltsWritingT2GenerateClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.IeltsWritingT2Generate(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -380,17 +383,19 @@ func request_ChatService_IeltsWritingT2Generate_0(ctx context.Context, marshaler
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_IeltsWritingT2Enrich_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_IeltsWritingT2EnrichClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.IeltsWritingT2Enrich(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -401,17 +406,19 @@ func request_ChatService_IeltsWritingT2Enrich_0(ctx context.Context, marshaler r
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_IeltsWritingT2Score_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_IeltsWritingT2ScoreClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.IeltsWritingT2Score(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -422,17 +429,19 @@ func request_ChatService_IeltsWritingT2Score_0(ctx context.Context, marshaler ru
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_IeltsSpeakingWordsSynonyms_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_IeltsSpeakingWordsSynonymsClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.IeltsSpeakingWordsSynonyms(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -443,17 +452,19 @@ func request_ChatService_IeltsSpeakingWordsSynonyms_0(ctx context.Context, marsh
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_IeltsSpeakingWordsUsage_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_IeltsSpeakingWordsUsageClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.IeltsSpeakingWordsUsage(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -464,17 +475,19 @@ func request_ChatService_IeltsSpeakingWordsUsage_0(ctx context.Context, marshale
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_IeltsWritingWordsTheme_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_IeltsWritingWordsThemeClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.IeltsWritingWordsTheme(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -485,17 +498,19 @@ func request_ChatService_IeltsWritingWordsTheme_0(ctx context.Context, marshaler
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_IeltsWritingWordsSynonyms_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_IeltsWritingWordsSynonymsClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.IeltsWritingWordsSynonyms(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -506,17 +521,19 @@ func request_ChatService_IeltsWritingWordsSynonyms_0(ctx context.Context, marsha
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_IeltsWritingWordsCombination_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_IeltsWritingWordsCombinationClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.IeltsWritingWordsCombination(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -527,17 +544,19 @@ func request_ChatService_IeltsWritingWordsCombination_0(ctx context.Context, mar
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_ToeflSpeakingP1Generate_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_ToeflSpeakingP1GenerateClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.ToeflSpeakingP1Generate(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -548,17 +567,19 @@ func request_ChatService_ToeflSpeakingP1Generate_0(ctx context.Context, marshale
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_ToeflSpeakingP1Enrich_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_ToeflSpeakingP1EnrichClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.ToeflSpeakingP1Enrich(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -569,17 +590,19 @@ func request_ChatService_ToeflSpeakingP1Enrich_0(ctx context.Context, marshaler 
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_ToeflSpeakingP1Score_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_ToeflSpeakingP1ScoreClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.ToeflSpeakingP1Score(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -590,17 +613,19 @@ func request_ChatService_ToeflSpeakingP1Score_0(ctx context.Context, marshaler r
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_ToeflWritingP1Enrich_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_ToeflWritingP1EnrichClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.ToeflWritingP1Enrich(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -611,17 +636,19 @@ func request_ChatService_ToeflWritingP1Enrich_0(ctx context.Context, marshaler r
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_ToeflWritingP1Score_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_ToeflWritingP1ScoreClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.ToeflWritingP1Score(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -632,17 +659,19 @@ func request_ChatService_ToeflWritingP1Score_0(ctx context.Context, marshaler ru
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_ToeflWritingP2Enrich_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_ToeflWritingP2EnrichClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.ToeflWritingP2Enrich(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -653,17 +682,19 @@ func request_ChatService_ToeflWritingP2Enrich_0(ctx context.Context, marshaler r
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_ToeflWritingP2Score_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_ToeflWritingP2ScoreClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.ToeflWritingP2Score(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -674,17 +705,19 @@ func request_ChatService_ToeflWritingP2Score_0(ctx context.Context, marshaler ru
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_ToeflWritingP3Enrich_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_ToeflWritingP3EnrichClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.ToeflWritingP3Enrich(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -695,17 +728,19 @@ func request_ChatService_ToeflWritingP3Enrich_0(ctx context.Context, marshaler r
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_ToeflWritingP3Generate_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_ToeflWritingP3GenerateClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.ToeflWritingP3Generate(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -716,17 +751,19 @@ func request_ChatService_ToeflWritingP3Generate_0(ctx context.Context, marshaler
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_CnToEn_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_CnToEnClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.CnToEn(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -737,17 +774,19 @@ func request_ChatService_CnToEn_0(ctx context.Context, marshaler runtime.Marshal
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_EnToCn_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (ChatService_EnToCnClient, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	stream, err := client.EnToCn(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
@@ -758,111 +797,114 @@ func request_ChatService_EnToCn_0(ctx context.Context, marshaler runtime.Marshal
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
-
 }
 
 func request_ChatService_IeltsSpeakingExercise_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	msg, err := client.IeltsSpeakingExercise(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_ChatService_IeltsSpeakingExercise_0(ctx context.Context, marshaler runtime.Marshaler, server ChatServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.IeltsSpeakingExercise(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_ChatService_IeltsSpeakingExam_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	msg, err := client.IeltsSpeakingExam(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_ChatService_IeltsSpeakingExam_0(ctx context.Context, marshaler runtime.Marshaler, server ChatServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ChatMessage
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ChatMessage
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.IeltsSpeakingExam(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_ChatService_IeltsTalkReportImpl_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ExamAnswerList
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ExamAnswerList
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	msg, err := client.IeltsTalkReportImpl(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_ChatService_IeltsTalkReportImpl_0(ctx context.Context, marshaler runtime.Marshaler, server ChatServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ExamAnswerList
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ExamAnswerList
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.IeltsTalkReportImpl(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_ReportService_IeltsTalkReport_0(ctx context.Context, marshaler runtime.Marshaler, client ReportServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryExamAnswerListRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq QueryExamAnswerListRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	msg, err := client.IeltsTalkReport(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_ReportService_IeltsTalkReport_0(ctx context.Context, marshaler runtime.Marshaler, server ReportServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryExamAnswerListRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq QueryExamAnswerListRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.IeltsTalkReport(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 // RegisterChatServiceHandlerServer registers the http handlers for service ChatService to "mux".
@@ -871,16 +913,13 @@ func local_request_ReportService_IeltsTalkReport_0(ctx context.Context, marshale
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterChatServiceHandlerFromEndpoint instead.
 // GRPC interceptors will not work for this type of registration. To use interceptors, you must use the "runtime.WithMiddlewares" option in the "runtime.NewServeMux" call.
 func RegisterChatServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server ChatServiceServer) error {
-
-	mux.Handle("POST", pattern_ChatService_Ask_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_Ask_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/chat_completion.ChatService/Ask", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ask"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chat_completion.ChatService/Ask", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ask"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -892,34 +931,29 @@ func RegisterChatServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_Ask_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
 
-	mux.Handle("POST", pattern_ChatService_Chat_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_Chat_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
 		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 		return
 	})
 
-	mux.Handle("POST", pattern_ChatService_WriteArticleByTitle_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_WriteArticleByTitle_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
 		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 		return
 	})
-
-	mux.Handle("POST", pattern_ChatService_TranscribeJudge_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_TranscribeJudge_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/chat_completion.ChatService/TranscribeJudge", runtime.WithHTTPPathPattern("/chat_completion.ChatService/transcribe_judge"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chat_completion.ChatService/TranscribeJudge", runtime.WithHTTPPathPattern("/chat_completion.ChatService/transcribe_judge"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -931,241 +965,211 @@ func RegisterChatServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_TranscribeJudge_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
 
-	mux.Handle("POST", pattern_ChatService_TextToSpeech_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsSpeakingP1Generate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsSpeakingP1Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsSpeakingP2Generate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsSpeakingP2Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsSpeakingP2Score_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsSpeakingP3Generate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsSpeakingP3Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsWritingT1Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsWritingT1Score_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsWritingT2Generate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsWritingT2Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsWritingT2Score_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsSpeakingWordsSynonyms_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsSpeakingWordsUsage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsWritingWordsTheme_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsWritingWordsSynonyms_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsWritingWordsCombination_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle(http.MethodPost, pattern_ChatService_ToeflSpeakingP1Generate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle(http.MethodPost, pattern_ChatService_ToeflSpeakingP1Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle(http.MethodPost, pattern_ChatService_ToeflSpeakingP1Score_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle(http.MethodPost, pattern_ChatService_ToeflWritingP1Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle(http.MethodPost, pattern_ChatService_ToeflWritingP1Score_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle(http.MethodPost, pattern_ChatService_ToeflWritingP2Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle(http.MethodPost, pattern_ChatService_ToeflWritingP2Score_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle(http.MethodPost, pattern_ChatService_ToeflWritingP3Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle(http.MethodPost, pattern_ChatService_ToeflWritingP3Generate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle(http.MethodPost, pattern_ChatService_CnToEn_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle(http.MethodPost, pattern_ChatService_EnToCn_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsSpeakingExercise_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/chat_completion.ChatService/TextToSpeech", runtime.WithHTTPPathPattern("/chat_completion.ChatService/text_to_speech"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := local_request_ChatService_TextToSpeech_0(annotatedContext, inboundMarshaler, server, req, pathParams)
-		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-
-		forward_ChatService_TextToSpeech_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
-	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsSpeakingP1Generate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsSpeakingP1Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsSpeakingP2Generate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsSpeakingP2Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsSpeakingP2Score_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsSpeakingP3Generate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsSpeakingP3Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsWritingT1Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsWritingT1Score_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsWritingT2Generate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsWritingT2Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsWritingT2Score_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsSpeakingWordsSynonyms_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsSpeakingWordsUsage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsWritingWordsTheme_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsWritingWordsSynonyms_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsWritingWordsCombination_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_ToeflSpeakingP1Generate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_ToeflSpeakingP1Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_ToeflSpeakingP1Score_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_ToeflWritingP1Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_ToeflWritingP1Score_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_ToeflWritingP2Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_ToeflWritingP2Score_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_ToeflWritingP3Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_ToeflWritingP3Generate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_CnToEn_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_EnToCn_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsSpeakingExercise_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		var stream runtime.ServerTransportStream
-		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/chat_completion.ChatService/IeltsSpeakingExercise", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_speaking_exercise"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chat_completion.ChatService/IeltsSpeakingExercise", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_speaking_exercise"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1177,20 +1181,15 @@ func RegisterChatServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_IeltsSpeakingExercise_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsSpeakingExam_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsSpeakingExam_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/chat_completion.ChatService/IeltsSpeakingExam", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_speaking_exam"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chat_completion.ChatService/IeltsSpeakingExam", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_speaking_exam"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1202,20 +1201,15 @@ func RegisterChatServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_IeltsSpeakingExam_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsTalkReportImpl_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsTalkReportImpl_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/chat_completion.ChatService/IeltsTalkReportImpl", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_talk_report_impl"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chat_completion.ChatService/IeltsTalkReportImpl", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_talk_report_impl"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1227,9 +1221,7 @@ func RegisterChatServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_IeltsTalkReportImpl_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
 
 	return nil
@@ -1241,16 +1233,13 @@ func RegisterChatServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterReportServiceHandlerFromEndpoint instead.
 // GRPC interceptors will not work for this type of registration. To use interceptors, you must use the "runtime.WithMiddlewares" option in the "runtime.NewServeMux" call.
 func RegisterReportServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server ReportServiceServer) error {
-
-	mux.Handle("POST", pattern_ReportService_IeltsTalkReport_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ReportService_IeltsTalkReport_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/chat_completion.ReportService/IeltsTalkReport", runtime.WithHTTPPathPattern("/chat_completion.ReportService/ielts_talk_report"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/chat_completion.ReportService/IeltsTalkReport", runtime.WithHTTPPathPattern("/chat_completion.ReportService/ielts_talk_report"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1262,9 +1251,7 @@ func RegisterReportServiceHandlerServer(ctx context.Context, mux *runtime.ServeM
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ReportService_IeltsTalkReport_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
 
 	return nil
@@ -1291,7 +1278,6 @@ func RegisterChatServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.Se
 			}
 		}()
 	}()
-
 	return RegisterChatServiceHandler(ctx, mux, conn)
 }
 
@@ -1307,14 +1293,11 @@ func RegisterChatServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "ChatServiceClient" to call the correct interceptors. This client ignores the HTTP middlewares.
 func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client ChatServiceClient) error {
-
-	mux.Handle("POST", pattern_ChatService_Ask_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_Ask_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/Ask", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ask"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/Ask", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ask"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1325,18 +1308,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_Ask_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_Chat_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_Chat_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/Chat", runtime.WithHTTPPathPattern("/chat_completion.ChatService/chat"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/Chat", runtime.WithHTTPPathPattern("/chat_completion.ChatService/chat"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1347,18 +1325,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_Chat_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_WriteArticleByTitle_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_WriteArticleByTitle_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/WriteArticleByTitle", runtime.WithHTTPPathPattern("/chat_completion.ChatService/write_article_by_title"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/WriteArticleByTitle", runtime.WithHTTPPathPattern("/chat_completion.ChatService/write_article_by_title"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1369,18 +1342,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_WriteArticleByTitle_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_TranscribeJudge_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_TranscribeJudge_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/TranscribeJudge", runtime.WithHTTPPathPattern("/chat_completion.ChatService/transcribe_judge"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/TranscribeJudge", runtime.WithHTTPPathPattern("/chat_completion.ChatService/transcribe_judge"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1391,40 +1359,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_TranscribeJudge_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_TextToSpeech_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsSpeakingP1Generate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/TextToSpeech", runtime.WithHTTPPathPattern("/chat_completion.ChatService/text_to_speech"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := request_ChatService_TextToSpeech_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-
-		forward_ChatService_TextToSpeech_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
-	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsSpeakingP1Generate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsSpeakingP1Generate", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_speaking_p1_generate"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsSpeakingP1Generate", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_speaking_p1_generate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1435,18 +1376,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_IeltsSpeakingP1Generate_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsSpeakingP1Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsSpeakingP1Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsSpeakingP1Enrich", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_speaking_p1_enrich"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsSpeakingP1Enrich", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_speaking_p1_enrich"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1457,18 +1393,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_IeltsSpeakingP1Enrich_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsSpeakingP2Generate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsSpeakingP2Generate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsSpeakingP2Generate", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_speaking_p2_generate"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsSpeakingP2Generate", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_speaking_p2_generate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1479,18 +1410,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_IeltsSpeakingP2Generate_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsSpeakingP2Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsSpeakingP2Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsSpeakingP2Enrich", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_speaking_p2_enrich"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsSpeakingP2Enrich", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_speaking_p2_enrich"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1501,18 +1427,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_IeltsSpeakingP2Enrich_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsSpeakingP2Score_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsSpeakingP2Score_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsSpeakingP2Score", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_speaking_p2_score"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsSpeakingP2Score", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_speaking_p2_score"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1523,18 +1444,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_IeltsSpeakingP2Score_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsSpeakingP3Generate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsSpeakingP3Generate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsSpeakingP3Generate", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_speaking_p3_generate"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsSpeakingP3Generate", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_speaking_p3_generate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1545,18 +1461,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_IeltsSpeakingP3Generate_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsSpeakingP3Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsSpeakingP3Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsSpeakingP3Enrich", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_speaking_p3_enrich"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsSpeakingP3Enrich", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_speaking_p3_enrich"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1567,18 +1478,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_IeltsSpeakingP3Enrich_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsWritingT1Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsWritingT1Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsWritingT1Enrich", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_writing_t1_enrich"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsWritingT1Enrich", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_writing_t1_enrich"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1589,18 +1495,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_IeltsWritingT1Enrich_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsWritingT1Score_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsWritingT1Score_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsWritingT1Score", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_writing_t1_score"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsWritingT1Score", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_writing_t1_score"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1611,18 +1512,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_IeltsWritingT1Score_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsWritingT2Generate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsWritingT2Generate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsWritingT2Generate", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_writing_t2_generate"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsWritingT2Generate", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_writing_t2_generate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1633,18 +1529,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_IeltsWritingT2Generate_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsWritingT2Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsWritingT2Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsWritingT2Enrich", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_writing_t2_enrich"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsWritingT2Enrich", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_writing_t2_enrich"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1655,18 +1546,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_IeltsWritingT2Enrich_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsWritingT2Score_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsWritingT2Score_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsWritingT2Score", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_writing_t2_score"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsWritingT2Score", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_writing_t2_score"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1677,18 +1563,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_IeltsWritingT2Score_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsSpeakingWordsSynonyms_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsSpeakingWordsSynonyms_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsSpeakingWordsSynonyms", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_speaking_words_synonyms"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsSpeakingWordsSynonyms", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_speaking_words_synonyms"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1699,18 +1580,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_IeltsSpeakingWordsSynonyms_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsSpeakingWordsUsage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsSpeakingWordsUsage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsSpeakingWordsUsage", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_speaking_words_usage"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsSpeakingWordsUsage", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_speaking_words_usage"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1721,18 +1597,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_IeltsSpeakingWordsUsage_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsWritingWordsTheme_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsWritingWordsTheme_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsWritingWordsTheme", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_writing_words_theme"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsWritingWordsTheme", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_writing_words_theme"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1743,18 +1614,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_IeltsWritingWordsTheme_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsWritingWordsSynonyms_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsWritingWordsSynonyms_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsWritingWordsSynonyms", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_writing_words_synonyms"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsWritingWordsSynonyms", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_writing_words_synonyms"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1765,18 +1631,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_IeltsWritingWordsSynonyms_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsWritingWordsCombination_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsWritingWordsCombination_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsWritingWordsCombination", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_writing_words_combination"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsWritingWordsCombination", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_writing_words_combination"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1787,18 +1648,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_IeltsWritingWordsCombination_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_ToeflSpeakingP1Generate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_ToeflSpeakingP1Generate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/ToeflSpeakingP1Generate", runtime.WithHTTPPathPattern("/chat_completion.ChatService/toefl_speaking_p1_generate"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/ToeflSpeakingP1Generate", runtime.WithHTTPPathPattern("/chat_completion.ChatService/toefl_speaking_p1_generate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1809,18 +1665,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_ToeflSpeakingP1Generate_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_ToeflSpeakingP1Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_ToeflSpeakingP1Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/ToeflSpeakingP1Enrich", runtime.WithHTTPPathPattern("/chat_completion.ChatService/toefl_speaking_p1_enrich"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/ToeflSpeakingP1Enrich", runtime.WithHTTPPathPattern("/chat_completion.ChatService/toefl_speaking_p1_enrich"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1831,18 +1682,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_ToeflSpeakingP1Enrich_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_ToeflSpeakingP1Score_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_ToeflSpeakingP1Score_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/ToeflSpeakingP1Score", runtime.WithHTTPPathPattern("/chat_completion.ChatService/toefl_speaking_p1_score"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/ToeflSpeakingP1Score", runtime.WithHTTPPathPattern("/chat_completion.ChatService/toefl_speaking_p1_score"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1853,18 +1699,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_ToeflSpeakingP1Score_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_ToeflWritingP1Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_ToeflWritingP1Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/ToeflWritingP1Enrich", runtime.WithHTTPPathPattern("/chat_completion.ChatService/toefl_writing_p1_enrich"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/ToeflWritingP1Enrich", runtime.WithHTTPPathPattern("/chat_completion.ChatService/toefl_writing_p1_enrich"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1875,18 +1716,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_ToeflWritingP1Enrich_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_ToeflWritingP1Score_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_ToeflWritingP1Score_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/ToeflWritingP1Score", runtime.WithHTTPPathPattern("/chat_completion.ChatService/toefl_writing_p1_score"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/ToeflWritingP1Score", runtime.WithHTTPPathPattern("/chat_completion.ChatService/toefl_writing_p1_score"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1897,18 +1733,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_ToeflWritingP1Score_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_ToeflWritingP2Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_ToeflWritingP2Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/ToeflWritingP2Enrich", runtime.WithHTTPPathPattern("/chat_completion.ChatService/toefl_writing_p2_enrich"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/ToeflWritingP2Enrich", runtime.WithHTTPPathPattern("/chat_completion.ChatService/toefl_writing_p2_enrich"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1919,18 +1750,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_ToeflWritingP2Enrich_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_ToeflWritingP2Score_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_ToeflWritingP2Score_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/ToeflWritingP2Score", runtime.WithHTTPPathPattern("/chat_completion.ChatService/toefl_writing_p2_score"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/ToeflWritingP2Score", runtime.WithHTTPPathPattern("/chat_completion.ChatService/toefl_writing_p2_score"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1941,18 +1767,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_ToeflWritingP2Score_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_ToeflWritingP3Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_ToeflWritingP3Enrich_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/ToeflWritingP3Enrich", runtime.WithHTTPPathPattern("/chat_completion.ChatService/toefl_writing_p3_enrich"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/ToeflWritingP3Enrich", runtime.WithHTTPPathPattern("/chat_completion.ChatService/toefl_writing_p3_enrich"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1963,18 +1784,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_ToeflWritingP3Enrich_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_ToeflWritingP3Generate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_ToeflWritingP3Generate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/ToeflWritingP3Generate", runtime.WithHTTPPathPattern("/chat_completion.ChatService/toefl_writing_p3_generate"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/ToeflWritingP3Generate", runtime.WithHTTPPathPattern("/chat_completion.ChatService/toefl_writing_p3_generate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1985,18 +1801,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_ToeflWritingP3Generate_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_CnToEn_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_CnToEn_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/CnToEn", runtime.WithHTTPPathPattern("/chat_completion.ChatService/cn_to_en"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/CnToEn", runtime.WithHTTPPathPattern("/chat_completion.ChatService/cn_to_en"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2007,18 +1818,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_CnToEn_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_EnToCn_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_EnToCn_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/EnToCn", runtime.WithHTTPPathPattern("/chat_completion.ChatService/en_to_cn"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/EnToCn", runtime.WithHTTPPathPattern("/chat_completion.ChatService/en_to_cn"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2029,18 +1835,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_EnToCn_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsSpeakingExercise_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsSpeakingExercise_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsSpeakingExercise", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_speaking_exercise"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsSpeakingExercise", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_speaking_exercise"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2051,18 +1852,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_IeltsSpeakingExercise_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsSpeakingExam_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsSpeakingExam_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsSpeakingExam", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_speaking_exam"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsSpeakingExam", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_speaking_exam"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2073,18 +1869,13 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_IeltsSpeakingExam_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ChatService_IeltsTalkReportImpl_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ChatService_IeltsTalkReportImpl_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsTalkReportImpl", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_talk_report_impl"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ChatService/IeltsTalkReportImpl", runtime.WithHTTPPathPattern("/chat_completion.ChatService/ielts_talk_report_impl"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2095,160 +1886,85 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ChatService_IeltsTalkReportImpl_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
 	return nil
 }
 
 var (
-	pattern_ChatService_Ask_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ask"}, ""))
-
-	pattern_ChatService_Chat_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "chat"}, ""))
-
-	pattern_ChatService_WriteArticleByTitle_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "write_article_by_title"}, ""))
-
-	pattern_ChatService_TranscribeJudge_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "transcribe_judge"}, ""))
-
-	pattern_ChatService_TextToSpeech_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "text_to_speech"}, ""))
-
-	pattern_ChatService_IeltsSpeakingP1Generate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_speaking_p1_generate"}, ""))
-
-	pattern_ChatService_IeltsSpeakingP1Enrich_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_speaking_p1_enrich"}, ""))
-
-	pattern_ChatService_IeltsSpeakingP2Generate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_speaking_p2_generate"}, ""))
-
-	pattern_ChatService_IeltsSpeakingP2Enrich_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_speaking_p2_enrich"}, ""))
-
-	pattern_ChatService_IeltsSpeakingP2Score_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_speaking_p2_score"}, ""))
-
-	pattern_ChatService_IeltsSpeakingP3Generate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_speaking_p3_generate"}, ""))
-
-	pattern_ChatService_IeltsSpeakingP3Enrich_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_speaking_p3_enrich"}, ""))
-
-	pattern_ChatService_IeltsWritingT1Enrich_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_writing_t1_enrich"}, ""))
-
-	pattern_ChatService_IeltsWritingT1Score_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_writing_t1_score"}, ""))
-
-	pattern_ChatService_IeltsWritingT2Generate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_writing_t2_generate"}, ""))
-
-	pattern_ChatService_IeltsWritingT2Enrich_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_writing_t2_enrich"}, ""))
-
-	pattern_ChatService_IeltsWritingT2Score_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_writing_t2_score"}, ""))
-
-	pattern_ChatService_IeltsSpeakingWordsSynonyms_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_speaking_words_synonyms"}, ""))
-
-	pattern_ChatService_IeltsSpeakingWordsUsage_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_speaking_words_usage"}, ""))
-
-	pattern_ChatService_IeltsWritingWordsTheme_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_writing_words_theme"}, ""))
-
-	pattern_ChatService_IeltsWritingWordsSynonyms_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_writing_words_synonyms"}, ""))
-
+	pattern_ChatService_Ask_0                          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ask"}, ""))
+	pattern_ChatService_Chat_0                         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "chat"}, ""))
+	pattern_ChatService_WriteArticleByTitle_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "write_article_by_title"}, ""))
+	pattern_ChatService_TranscribeJudge_0              = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "transcribe_judge"}, ""))
+	pattern_ChatService_IeltsSpeakingP1Generate_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_speaking_p1_generate"}, ""))
+	pattern_ChatService_IeltsSpeakingP1Enrich_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_speaking_p1_enrich"}, ""))
+	pattern_ChatService_IeltsSpeakingP2Generate_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_speaking_p2_generate"}, ""))
+	pattern_ChatService_IeltsSpeakingP2Enrich_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_speaking_p2_enrich"}, ""))
+	pattern_ChatService_IeltsSpeakingP2Score_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_speaking_p2_score"}, ""))
+	pattern_ChatService_IeltsSpeakingP3Generate_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_speaking_p3_generate"}, ""))
+	pattern_ChatService_IeltsSpeakingP3Enrich_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_speaking_p3_enrich"}, ""))
+	pattern_ChatService_IeltsWritingT1Enrich_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_writing_t1_enrich"}, ""))
+	pattern_ChatService_IeltsWritingT1Score_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_writing_t1_score"}, ""))
+	pattern_ChatService_IeltsWritingT2Generate_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_writing_t2_generate"}, ""))
+	pattern_ChatService_IeltsWritingT2Enrich_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_writing_t2_enrich"}, ""))
+	pattern_ChatService_IeltsWritingT2Score_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_writing_t2_score"}, ""))
+	pattern_ChatService_IeltsSpeakingWordsSynonyms_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_speaking_words_synonyms"}, ""))
+	pattern_ChatService_IeltsSpeakingWordsUsage_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_speaking_words_usage"}, ""))
+	pattern_ChatService_IeltsWritingWordsTheme_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_writing_words_theme"}, ""))
+	pattern_ChatService_IeltsWritingWordsSynonyms_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_writing_words_synonyms"}, ""))
 	pattern_ChatService_IeltsWritingWordsCombination_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_writing_words_combination"}, ""))
-
-	pattern_ChatService_ToeflSpeakingP1Generate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "toefl_speaking_p1_generate"}, ""))
-
-	pattern_ChatService_ToeflSpeakingP1Enrich_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "toefl_speaking_p1_enrich"}, ""))
-
-	pattern_ChatService_ToeflSpeakingP1Score_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "toefl_speaking_p1_score"}, ""))
-
-	pattern_ChatService_ToeflWritingP1Enrich_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "toefl_writing_p1_enrich"}, ""))
-
-	pattern_ChatService_ToeflWritingP1Score_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "toefl_writing_p1_score"}, ""))
-
-	pattern_ChatService_ToeflWritingP2Enrich_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "toefl_writing_p2_enrich"}, ""))
-
-	pattern_ChatService_ToeflWritingP2Score_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "toefl_writing_p2_score"}, ""))
-
-	pattern_ChatService_ToeflWritingP3Enrich_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "toefl_writing_p3_enrich"}, ""))
-
-	pattern_ChatService_ToeflWritingP3Generate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "toefl_writing_p3_generate"}, ""))
-
-	pattern_ChatService_CnToEn_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "cn_to_en"}, ""))
-
-	pattern_ChatService_EnToCn_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "en_to_cn"}, ""))
-
-	pattern_ChatService_IeltsSpeakingExercise_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_speaking_exercise"}, ""))
-
-	pattern_ChatService_IeltsSpeakingExam_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_speaking_exam"}, ""))
-
-	pattern_ChatService_IeltsTalkReportImpl_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_talk_report_impl"}, ""))
+	pattern_ChatService_ToeflSpeakingP1Generate_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "toefl_speaking_p1_generate"}, ""))
+	pattern_ChatService_ToeflSpeakingP1Enrich_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "toefl_speaking_p1_enrich"}, ""))
+	pattern_ChatService_ToeflSpeakingP1Score_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "toefl_speaking_p1_score"}, ""))
+	pattern_ChatService_ToeflWritingP1Enrich_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "toefl_writing_p1_enrich"}, ""))
+	pattern_ChatService_ToeflWritingP1Score_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "toefl_writing_p1_score"}, ""))
+	pattern_ChatService_ToeflWritingP2Enrich_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "toefl_writing_p2_enrich"}, ""))
+	pattern_ChatService_ToeflWritingP2Score_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "toefl_writing_p2_score"}, ""))
+	pattern_ChatService_ToeflWritingP3Enrich_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "toefl_writing_p3_enrich"}, ""))
+	pattern_ChatService_ToeflWritingP3Generate_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "toefl_writing_p3_generate"}, ""))
+	pattern_ChatService_CnToEn_0                       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "cn_to_en"}, ""))
+	pattern_ChatService_EnToCn_0                       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "en_to_cn"}, ""))
+	pattern_ChatService_IeltsSpeakingExercise_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_speaking_exercise"}, ""))
+	pattern_ChatService_IeltsSpeakingExam_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_speaking_exam"}, ""))
+	pattern_ChatService_IeltsTalkReportImpl_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chat_completion.ChatService", "ielts_talk_report_impl"}, ""))
 )
 
 var (
-	forward_ChatService_Ask_0 = runtime.ForwardResponseMessage
-
-	forward_ChatService_Chat_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_WriteArticleByTitle_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_TranscribeJudge_0 = runtime.ForwardResponseMessage
-
-	forward_ChatService_TextToSpeech_0 = runtime.ForwardResponseMessage
-
-	forward_ChatService_IeltsSpeakingP1Generate_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_IeltsSpeakingP1Enrich_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_IeltsSpeakingP2Generate_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_IeltsSpeakingP2Enrich_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_IeltsSpeakingP2Score_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_IeltsSpeakingP3Generate_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_IeltsSpeakingP3Enrich_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_IeltsWritingT1Enrich_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_IeltsWritingT1Score_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_IeltsWritingT2Generate_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_IeltsWritingT2Enrich_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_IeltsWritingT2Score_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_IeltsSpeakingWordsSynonyms_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_IeltsSpeakingWordsUsage_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_IeltsWritingWordsTheme_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_IeltsWritingWordsSynonyms_0 = runtime.ForwardResponseStream
-
+	forward_ChatService_Ask_0                          = runtime.ForwardResponseMessage
+	forward_ChatService_Chat_0                         = runtime.ForwardResponseStream
+	forward_ChatService_WriteArticleByTitle_0          = runtime.ForwardResponseStream
+	forward_ChatService_TranscribeJudge_0              = runtime.ForwardResponseMessage
+	forward_ChatService_IeltsSpeakingP1Generate_0      = runtime.ForwardResponseStream
+	forward_ChatService_IeltsSpeakingP1Enrich_0        = runtime.ForwardResponseStream
+	forward_ChatService_IeltsSpeakingP2Generate_0      = runtime.ForwardResponseStream
+	forward_ChatService_IeltsSpeakingP2Enrich_0        = runtime.ForwardResponseStream
+	forward_ChatService_IeltsSpeakingP2Score_0         = runtime.ForwardResponseStream
+	forward_ChatService_IeltsSpeakingP3Generate_0      = runtime.ForwardResponseStream
+	forward_ChatService_IeltsSpeakingP3Enrich_0        = runtime.ForwardResponseStream
+	forward_ChatService_IeltsWritingT1Enrich_0         = runtime.ForwardResponseStream
+	forward_ChatService_IeltsWritingT1Score_0          = runtime.ForwardResponseStream
+	forward_ChatService_IeltsWritingT2Generate_0       = runtime.ForwardResponseStream
+	forward_ChatService_IeltsWritingT2Enrich_0         = runtime.ForwardResponseStream
+	forward_ChatService_IeltsWritingT2Score_0          = runtime.ForwardResponseStream
+	forward_ChatService_IeltsSpeakingWordsSynonyms_0   = runtime.ForwardResponseStream
+	forward_ChatService_IeltsSpeakingWordsUsage_0      = runtime.ForwardResponseStream
+	forward_ChatService_IeltsWritingWordsTheme_0       = runtime.ForwardResponseStream
+	forward_ChatService_IeltsWritingWordsSynonyms_0    = runtime.ForwardResponseStream
 	forward_ChatService_IeltsWritingWordsCombination_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_ToeflSpeakingP1Generate_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_ToeflSpeakingP1Enrich_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_ToeflSpeakingP1Score_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_ToeflWritingP1Enrich_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_ToeflWritingP1Score_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_ToeflWritingP2Enrich_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_ToeflWritingP2Score_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_ToeflWritingP3Enrich_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_ToeflWritingP3Generate_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_CnToEn_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_EnToCn_0 = runtime.ForwardResponseStream
-
-	forward_ChatService_IeltsSpeakingExercise_0 = runtime.ForwardResponseMessage
-
-	forward_ChatService_IeltsSpeakingExam_0 = runtime.ForwardResponseMessage
-
-	forward_ChatService_IeltsTalkReportImpl_0 = runtime.ForwardResponseMessage
+	forward_ChatService_ToeflSpeakingP1Generate_0      = runtime.ForwardResponseStream
+	forward_ChatService_ToeflSpeakingP1Enrich_0        = runtime.ForwardResponseStream
+	forward_ChatService_ToeflSpeakingP1Score_0         = runtime.ForwardResponseStream
+	forward_ChatService_ToeflWritingP1Enrich_0         = runtime.ForwardResponseStream
+	forward_ChatService_ToeflWritingP1Score_0          = runtime.ForwardResponseStream
+	forward_ChatService_ToeflWritingP2Enrich_0         = runtime.ForwardResponseStream
+	forward_ChatService_ToeflWritingP2Score_0          = runtime.ForwardResponseStream
+	forward_ChatService_ToeflWritingP3Enrich_0         = runtime.ForwardResponseStream
+	forward_ChatService_ToeflWritingP3Generate_0       = runtime.ForwardResponseStream
+	forward_ChatService_CnToEn_0                       = runtime.ForwardResponseStream
+	forward_ChatService_EnToCn_0                       = runtime.ForwardResponseStream
+	forward_ChatService_IeltsSpeakingExercise_0        = runtime.ForwardResponseMessage
+	forward_ChatService_IeltsSpeakingExam_0            = runtime.ForwardResponseMessage
+	forward_ChatService_IeltsTalkReportImpl_0          = runtime.ForwardResponseMessage
 )
 
 // RegisterReportServiceHandlerFromEndpoint is same as RegisterReportServiceHandler but
@@ -2272,7 +1988,6 @@ func RegisterReportServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.
 			}
 		}()
 	}()
-
 	return RegisterReportServiceHandler(ctx, mux, conn)
 }
 
@@ -2288,14 +2003,11 @@ func RegisterReportServiceHandler(ctx context.Context, mux *runtime.ServeMux, co
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "ReportServiceClient" to call the correct interceptors. This client ignores the HTTP middlewares.
 func RegisterReportServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client ReportServiceClient) error {
-
-	mux.Handle("POST", pattern_ReportService_IeltsTalkReport_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ReportService_IeltsTalkReport_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ReportService/IeltsTalkReport", runtime.WithHTTPPathPattern("/chat_completion.ReportService/ielts_talk_report"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/chat_completion.ReportService/IeltsTalkReport", runtime.WithHTTPPathPattern("/chat_completion.ReportService/ielts_talk_report"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2306,11 +2018,8 @@ func RegisterReportServiceHandlerClient(ctx context.Context, mux *runtime.ServeM
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ReportService_IeltsTalkReport_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
 	return nil
 }
 
