@@ -22,7 +22,6 @@ const (
 	ChatService_Ask_FullMethodName                          = "/chat_completion.ChatService/ask"
 	ChatService_Chat_FullMethodName                         = "/chat_completion.ChatService/chat"
 	ChatService_WriteArticleByTitle_FullMethodName          = "/chat_completion.ChatService/write_article_by_title"
-	ChatService_TranscribeJudge_FullMethodName              = "/chat_completion.ChatService/transcribe_judge"
 	ChatService_IeltsSpeakingP1Generate_FullMethodName      = "/chat_completion.ChatService/ielts_speaking_p1_generate"
 	ChatService_IeltsSpeakingP1Enrich_FullMethodName        = "/chat_completion.ChatService/ielts_speaking_p1_enrich"
 	ChatService_IeltsSpeakingP2Generate_FullMethodName      = "/chat_completion.ChatService/ielts_speaking_p2_generate"
@@ -63,7 +62,6 @@ type ChatServiceClient interface {
 	Ask(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (*ChatMessage, error)
 	Chat(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[ChatMessage, ChatMessage], error)
 	WriteArticleByTitle(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ChatMessage], error)
-	TranscribeJudge(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (*ChatMessage, error)
 	// 雅思口语P1
 	IeltsSpeakingP1Generate(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ChatMessage], error)
 	IeltsSpeakingP1Enrich(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ChatMessage], error)
@@ -160,16 +158,6 @@ func (c *chatServiceClient) WriteArticleByTitle(ctx context.Context, in *ChatMes
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type ChatService_WriteArticleByTitleClient = grpc.ServerStreamingClient[ChatMessage]
-
-func (c *chatServiceClient) TranscribeJudge(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (*ChatMessage, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ChatMessage)
-	err := c.cc.Invoke(ctx, ChatService_TranscribeJudge_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
 
 func (c *chatServiceClient) IeltsSpeakingP1Generate(ctx context.Context, in *ChatMessage, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ChatMessage], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
@@ -740,7 +728,6 @@ type ChatServiceServer interface {
 	Ask(context.Context, *ChatMessage) (*ChatMessage, error)
 	Chat(grpc.BidiStreamingServer[ChatMessage, ChatMessage]) error
 	WriteArticleByTitle(*ChatMessage, grpc.ServerStreamingServer[ChatMessage]) error
-	TranscribeJudge(context.Context, *ChatMessage) (*ChatMessage, error)
 	// 雅思口语P1
 	IeltsSpeakingP1Generate(*ChatMessage, grpc.ServerStreamingServer[ChatMessage]) error
 	IeltsSpeakingP1Enrich(*ChatMessage, grpc.ServerStreamingServer[ChatMessage]) error
@@ -804,9 +791,6 @@ func (UnimplementedChatServiceServer) Chat(grpc.BidiStreamingServer[ChatMessage,
 }
 func (UnimplementedChatServiceServer) WriteArticleByTitle(*ChatMessage, grpc.ServerStreamingServer[ChatMessage]) error {
 	return status.Error(codes.Unimplemented, "method WriteArticleByTitle not implemented")
-}
-func (UnimplementedChatServiceServer) TranscribeJudge(context.Context, *ChatMessage) (*ChatMessage, error) {
-	return nil, status.Error(codes.Unimplemented, "method TranscribeJudge not implemented")
 }
 func (UnimplementedChatServiceServer) IeltsSpeakingP1Generate(*ChatMessage, grpc.ServerStreamingServer[ChatMessage]) error {
 	return status.Error(codes.Unimplemented, "method IeltsSpeakingP1Generate not implemented")
@@ -957,24 +941,6 @@ func _ChatService_WriteArticleByTitle_Handler(srv interface{}, stream grpc.Serve
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type ChatService_WriteArticleByTitleServer = grpc.ServerStreamingServer[ChatMessage]
-
-func _ChatService_TranscribeJudge_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ChatMessage)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ChatServiceServer).TranscribeJudge(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ChatService_TranscribeJudge_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ChatServiceServer).TranscribeJudge(ctx, req.(*ChatMessage))
-	}
-	return interceptor(ctx, in, info, handler)
-}
 
 func _ChatService_IeltsSpeakingP1Generate_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(ChatMessage)
@@ -1348,10 +1314,6 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ask",
 			Handler:    _ChatService_Ask_Handler,
-		},
-		{
-			MethodName: "transcribe_judge",
-			Handler:    _ChatService_TranscribeJudge_Handler,
 		},
 		{
 			MethodName: "ielts_speaking_exercise",

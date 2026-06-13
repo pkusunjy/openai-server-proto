@@ -451,12 +451,11 @@ const file_chat_completion_chat_completion_proto_rawDesc = "" +
 	"vocabulary\x1aR\n" +
 	"\x0fScoreAndComment\x12%\n" +
 	"\x0edetailed_score\x18\x01 \x01(\tR\rdetailedScore\x12\x18\n" +
-	"\acomment\x18\x02 \x01(\tR\acomment2\xce\x18\n" +
+	"\acomment\x18\x02 \x01(\tR\acomment2\xfc\x17\n" +
 	"\vChatService\x12C\n" +
 	"\x03ask\x12\x1c.chat_completion.ChatMessage\x1a\x1c.chat_completion.ChatMessage\"\x00\x12H\n" +
 	"\x04chat\x12\x1c.chat_completion.ChatMessage\x1a\x1c.chat_completion.ChatMessage\"\x00(\x010\x01\x12X\n" +
-	"\x16write_article_by_title\x12\x1c.chat_completion.ChatMessage\x1a\x1c.chat_completion.ChatMessage\"\x000\x01\x12P\n" +
-	"\x10transcribe_judge\x12\x1c.chat_completion.ChatMessage\x1a\x1c.chat_completion.ChatMessage\"\x00\x12\\\n" +
+	"\x16write_article_by_title\x12\x1c.chat_completion.ChatMessage\x1a\x1c.chat_completion.ChatMessage\"\x000\x01\x12\\\n" +
 	"\x1aielts_speaking_p1_generate\x12\x1c.chat_completion.ChatMessage\x1a\x1c.chat_completion.ChatMessage\"\x000\x01\x12Z\n" +
 	"\x18ielts_speaking_p1_enrich\x12\x1c.chat_completion.ChatMessage\x1a\x1c.chat_completion.ChatMessage\"\x000\x01\x12\\\n" +
 	"\x1aielts_speaking_p2_generate\x12\x1c.chat_completion.ChatMessage\x1a\x1c.chat_completion.ChatMessage\"\x000\x01\x12Z\n" +
@@ -523,77 +522,75 @@ var file_chat_completion_chat_completion_proto_depIdxs = []int32{
 	0,  // 6: chat_completion.ChatService.ask:input_type -> chat_completion.ChatMessage
 	0,  // 7: chat_completion.ChatService.chat:input_type -> chat_completion.ChatMessage
 	0,  // 8: chat_completion.ChatService.write_article_by_title:input_type -> chat_completion.ChatMessage
-	0,  // 9: chat_completion.ChatService.transcribe_judge:input_type -> chat_completion.ChatMessage
-	0,  // 10: chat_completion.ChatService.ielts_speaking_p1_generate:input_type -> chat_completion.ChatMessage
-	0,  // 11: chat_completion.ChatService.ielts_speaking_p1_enrich:input_type -> chat_completion.ChatMessage
-	0,  // 12: chat_completion.ChatService.ielts_speaking_p2_generate:input_type -> chat_completion.ChatMessage
-	0,  // 13: chat_completion.ChatService.ielts_speaking_p2_enrich:input_type -> chat_completion.ChatMessage
-	0,  // 14: chat_completion.ChatService.ielts_speaking_p2_score:input_type -> chat_completion.ChatMessage
-	0,  // 15: chat_completion.ChatService.ielts_speaking_p3_generate:input_type -> chat_completion.ChatMessage
-	0,  // 16: chat_completion.ChatService.ielts_speaking_p3_enrich:input_type -> chat_completion.ChatMessage
-	0,  // 17: chat_completion.ChatService.ielts_writing_t1_enrich:input_type -> chat_completion.ChatMessage
-	0,  // 18: chat_completion.ChatService.ielts_writing_t1_score:input_type -> chat_completion.ChatMessage
-	0,  // 19: chat_completion.ChatService.ielts_writing_t2_generate:input_type -> chat_completion.ChatMessage
-	0,  // 20: chat_completion.ChatService.ielts_writing_t2_enrich:input_type -> chat_completion.ChatMessage
-	0,  // 21: chat_completion.ChatService.ielts_writing_t2_score:input_type -> chat_completion.ChatMessage
-	0,  // 22: chat_completion.ChatService.ielts_speaking_words_synonyms:input_type -> chat_completion.ChatMessage
-	0,  // 23: chat_completion.ChatService.ielts_speaking_words_usage:input_type -> chat_completion.ChatMessage
-	0,  // 24: chat_completion.ChatService.ielts_writing_words_theme:input_type -> chat_completion.ChatMessage
-	0,  // 25: chat_completion.ChatService.ielts_writing_words_synonyms:input_type -> chat_completion.ChatMessage
-	0,  // 26: chat_completion.ChatService.ielts_writing_words_combination:input_type -> chat_completion.ChatMessage
-	0,  // 27: chat_completion.ChatService.toefl_speaking_p1_generate:input_type -> chat_completion.ChatMessage
-	0,  // 28: chat_completion.ChatService.toefl_speaking_p1_enrich:input_type -> chat_completion.ChatMessage
-	0,  // 29: chat_completion.ChatService.toefl_speaking_p1_score:input_type -> chat_completion.ChatMessage
-	0,  // 30: chat_completion.ChatService.toefl_writing_p1_enrich:input_type -> chat_completion.ChatMessage
-	0,  // 31: chat_completion.ChatService.toefl_writing_p1_score:input_type -> chat_completion.ChatMessage
-	0,  // 32: chat_completion.ChatService.toefl_writing_p2_enrich:input_type -> chat_completion.ChatMessage
-	0,  // 33: chat_completion.ChatService.toefl_writing_p2_score:input_type -> chat_completion.ChatMessage
-	0,  // 34: chat_completion.ChatService.toefl_writing_p3_enrich:input_type -> chat_completion.ChatMessage
-	0,  // 35: chat_completion.ChatService.toefl_writing_p3_generate:input_type -> chat_completion.ChatMessage
-	0,  // 36: chat_completion.ChatService.cn_to_en:input_type -> chat_completion.ChatMessage
-	0,  // 37: chat_completion.ChatService.en_to_cn:input_type -> chat_completion.ChatMessage
-	0,  // 38: chat_completion.ChatService.ielts_speaking_exercise:input_type -> chat_completion.ChatMessage
-	0,  // 39: chat_completion.ChatService.ielts_speaking_exam:input_type -> chat_completion.ChatMessage
-	2,  // 40: chat_completion.ChatService.ielts_talk_report_impl:input_type -> chat_completion.ExamAnswerList
-	3,  // 41: chat_completion.ReportService.ielts_talk_report:input_type -> chat_completion.QueryExamAnswerListRequest
-	0,  // 42: chat_completion.ChatService.ask:output_type -> chat_completion.ChatMessage
-	0,  // 43: chat_completion.ChatService.chat:output_type -> chat_completion.ChatMessage
-	0,  // 44: chat_completion.ChatService.write_article_by_title:output_type -> chat_completion.ChatMessage
-	0,  // 45: chat_completion.ChatService.transcribe_judge:output_type -> chat_completion.ChatMessage
-	0,  // 46: chat_completion.ChatService.ielts_speaking_p1_generate:output_type -> chat_completion.ChatMessage
-	0,  // 47: chat_completion.ChatService.ielts_speaking_p1_enrich:output_type -> chat_completion.ChatMessage
-	0,  // 48: chat_completion.ChatService.ielts_speaking_p2_generate:output_type -> chat_completion.ChatMessage
-	0,  // 49: chat_completion.ChatService.ielts_speaking_p2_enrich:output_type -> chat_completion.ChatMessage
-	0,  // 50: chat_completion.ChatService.ielts_speaking_p2_score:output_type -> chat_completion.ChatMessage
-	0,  // 51: chat_completion.ChatService.ielts_speaking_p3_generate:output_type -> chat_completion.ChatMessage
-	0,  // 52: chat_completion.ChatService.ielts_speaking_p3_enrich:output_type -> chat_completion.ChatMessage
-	0,  // 53: chat_completion.ChatService.ielts_writing_t1_enrich:output_type -> chat_completion.ChatMessage
-	0,  // 54: chat_completion.ChatService.ielts_writing_t1_score:output_type -> chat_completion.ChatMessage
-	0,  // 55: chat_completion.ChatService.ielts_writing_t2_generate:output_type -> chat_completion.ChatMessage
-	0,  // 56: chat_completion.ChatService.ielts_writing_t2_enrich:output_type -> chat_completion.ChatMessage
-	0,  // 57: chat_completion.ChatService.ielts_writing_t2_score:output_type -> chat_completion.ChatMessage
-	0,  // 58: chat_completion.ChatService.ielts_speaking_words_synonyms:output_type -> chat_completion.ChatMessage
-	0,  // 59: chat_completion.ChatService.ielts_speaking_words_usage:output_type -> chat_completion.ChatMessage
-	0,  // 60: chat_completion.ChatService.ielts_writing_words_theme:output_type -> chat_completion.ChatMessage
-	0,  // 61: chat_completion.ChatService.ielts_writing_words_synonyms:output_type -> chat_completion.ChatMessage
-	0,  // 62: chat_completion.ChatService.ielts_writing_words_combination:output_type -> chat_completion.ChatMessage
-	0,  // 63: chat_completion.ChatService.toefl_speaking_p1_generate:output_type -> chat_completion.ChatMessage
-	0,  // 64: chat_completion.ChatService.toefl_speaking_p1_enrich:output_type -> chat_completion.ChatMessage
-	0,  // 65: chat_completion.ChatService.toefl_speaking_p1_score:output_type -> chat_completion.ChatMessage
-	0,  // 66: chat_completion.ChatService.toefl_writing_p1_enrich:output_type -> chat_completion.ChatMessage
-	0,  // 67: chat_completion.ChatService.toefl_writing_p1_score:output_type -> chat_completion.ChatMessage
-	0,  // 68: chat_completion.ChatService.toefl_writing_p2_enrich:output_type -> chat_completion.ChatMessage
-	0,  // 69: chat_completion.ChatService.toefl_writing_p2_score:output_type -> chat_completion.ChatMessage
-	0,  // 70: chat_completion.ChatService.toefl_writing_p3_enrich:output_type -> chat_completion.ChatMessage
-	0,  // 71: chat_completion.ChatService.toefl_writing_p3_generate:output_type -> chat_completion.ChatMessage
-	0,  // 72: chat_completion.ChatService.cn_to_en:output_type -> chat_completion.ChatMessage
-	0,  // 73: chat_completion.ChatService.en_to_cn:output_type -> chat_completion.ChatMessage
-	0,  // 74: chat_completion.ChatService.ielts_speaking_exercise:output_type -> chat_completion.ChatMessage
-	0,  // 75: chat_completion.ChatService.ielts_speaking_exam:output_type -> chat_completion.ChatMessage
-	5,  // 76: chat_completion.ChatService.ielts_talk_report_impl:output_type -> chat_completion.TalkReport
-	5,  // 77: chat_completion.ReportService.ielts_talk_report:output_type -> chat_completion.TalkReport
-	42, // [42:78] is the sub-list for method output_type
-	6,  // [6:42] is the sub-list for method input_type
+	0,  // 9: chat_completion.ChatService.ielts_speaking_p1_generate:input_type -> chat_completion.ChatMessage
+	0,  // 10: chat_completion.ChatService.ielts_speaking_p1_enrich:input_type -> chat_completion.ChatMessage
+	0,  // 11: chat_completion.ChatService.ielts_speaking_p2_generate:input_type -> chat_completion.ChatMessage
+	0,  // 12: chat_completion.ChatService.ielts_speaking_p2_enrich:input_type -> chat_completion.ChatMessage
+	0,  // 13: chat_completion.ChatService.ielts_speaking_p2_score:input_type -> chat_completion.ChatMessage
+	0,  // 14: chat_completion.ChatService.ielts_speaking_p3_generate:input_type -> chat_completion.ChatMessage
+	0,  // 15: chat_completion.ChatService.ielts_speaking_p3_enrich:input_type -> chat_completion.ChatMessage
+	0,  // 16: chat_completion.ChatService.ielts_writing_t1_enrich:input_type -> chat_completion.ChatMessage
+	0,  // 17: chat_completion.ChatService.ielts_writing_t1_score:input_type -> chat_completion.ChatMessage
+	0,  // 18: chat_completion.ChatService.ielts_writing_t2_generate:input_type -> chat_completion.ChatMessage
+	0,  // 19: chat_completion.ChatService.ielts_writing_t2_enrich:input_type -> chat_completion.ChatMessage
+	0,  // 20: chat_completion.ChatService.ielts_writing_t2_score:input_type -> chat_completion.ChatMessage
+	0,  // 21: chat_completion.ChatService.ielts_speaking_words_synonyms:input_type -> chat_completion.ChatMessage
+	0,  // 22: chat_completion.ChatService.ielts_speaking_words_usage:input_type -> chat_completion.ChatMessage
+	0,  // 23: chat_completion.ChatService.ielts_writing_words_theme:input_type -> chat_completion.ChatMessage
+	0,  // 24: chat_completion.ChatService.ielts_writing_words_synonyms:input_type -> chat_completion.ChatMessage
+	0,  // 25: chat_completion.ChatService.ielts_writing_words_combination:input_type -> chat_completion.ChatMessage
+	0,  // 26: chat_completion.ChatService.toefl_speaking_p1_generate:input_type -> chat_completion.ChatMessage
+	0,  // 27: chat_completion.ChatService.toefl_speaking_p1_enrich:input_type -> chat_completion.ChatMessage
+	0,  // 28: chat_completion.ChatService.toefl_speaking_p1_score:input_type -> chat_completion.ChatMessage
+	0,  // 29: chat_completion.ChatService.toefl_writing_p1_enrich:input_type -> chat_completion.ChatMessage
+	0,  // 30: chat_completion.ChatService.toefl_writing_p1_score:input_type -> chat_completion.ChatMessage
+	0,  // 31: chat_completion.ChatService.toefl_writing_p2_enrich:input_type -> chat_completion.ChatMessage
+	0,  // 32: chat_completion.ChatService.toefl_writing_p2_score:input_type -> chat_completion.ChatMessage
+	0,  // 33: chat_completion.ChatService.toefl_writing_p3_enrich:input_type -> chat_completion.ChatMessage
+	0,  // 34: chat_completion.ChatService.toefl_writing_p3_generate:input_type -> chat_completion.ChatMessage
+	0,  // 35: chat_completion.ChatService.cn_to_en:input_type -> chat_completion.ChatMessage
+	0,  // 36: chat_completion.ChatService.en_to_cn:input_type -> chat_completion.ChatMessage
+	0,  // 37: chat_completion.ChatService.ielts_speaking_exercise:input_type -> chat_completion.ChatMessage
+	0,  // 38: chat_completion.ChatService.ielts_speaking_exam:input_type -> chat_completion.ChatMessage
+	2,  // 39: chat_completion.ChatService.ielts_talk_report_impl:input_type -> chat_completion.ExamAnswerList
+	3,  // 40: chat_completion.ReportService.ielts_talk_report:input_type -> chat_completion.QueryExamAnswerListRequest
+	0,  // 41: chat_completion.ChatService.ask:output_type -> chat_completion.ChatMessage
+	0,  // 42: chat_completion.ChatService.chat:output_type -> chat_completion.ChatMessage
+	0,  // 43: chat_completion.ChatService.write_article_by_title:output_type -> chat_completion.ChatMessage
+	0,  // 44: chat_completion.ChatService.ielts_speaking_p1_generate:output_type -> chat_completion.ChatMessage
+	0,  // 45: chat_completion.ChatService.ielts_speaking_p1_enrich:output_type -> chat_completion.ChatMessage
+	0,  // 46: chat_completion.ChatService.ielts_speaking_p2_generate:output_type -> chat_completion.ChatMessage
+	0,  // 47: chat_completion.ChatService.ielts_speaking_p2_enrich:output_type -> chat_completion.ChatMessage
+	0,  // 48: chat_completion.ChatService.ielts_speaking_p2_score:output_type -> chat_completion.ChatMessage
+	0,  // 49: chat_completion.ChatService.ielts_speaking_p3_generate:output_type -> chat_completion.ChatMessage
+	0,  // 50: chat_completion.ChatService.ielts_speaking_p3_enrich:output_type -> chat_completion.ChatMessage
+	0,  // 51: chat_completion.ChatService.ielts_writing_t1_enrich:output_type -> chat_completion.ChatMessage
+	0,  // 52: chat_completion.ChatService.ielts_writing_t1_score:output_type -> chat_completion.ChatMessage
+	0,  // 53: chat_completion.ChatService.ielts_writing_t2_generate:output_type -> chat_completion.ChatMessage
+	0,  // 54: chat_completion.ChatService.ielts_writing_t2_enrich:output_type -> chat_completion.ChatMessage
+	0,  // 55: chat_completion.ChatService.ielts_writing_t2_score:output_type -> chat_completion.ChatMessage
+	0,  // 56: chat_completion.ChatService.ielts_speaking_words_synonyms:output_type -> chat_completion.ChatMessage
+	0,  // 57: chat_completion.ChatService.ielts_speaking_words_usage:output_type -> chat_completion.ChatMessage
+	0,  // 58: chat_completion.ChatService.ielts_writing_words_theme:output_type -> chat_completion.ChatMessage
+	0,  // 59: chat_completion.ChatService.ielts_writing_words_synonyms:output_type -> chat_completion.ChatMessage
+	0,  // 60: chat_completion.ChatService.ielts_writing_words_combination:output_type -> chat_completion.ChatMessage
+	0,  // 61: chat_completion.ChatService.toefl_speaking_p1_generate:output_type -> chat_completion.ChatMessage
+	0,  // 62: chat_completion.ChatService.toefl_speaking_p1_enrich:output_type -> chat_completion.ChatMessage
+	0,  // 63: chat_completion.ChatService.toefl_speaking_p1_score:output_type -> chat_completion.ChatMessage
+	0,  // 64: chat_completion.ChatService.toefl_writing_p1_enrich:output_type -> chat_completion.ChatMessage
+	0,  // 65: chat_completion.ChatService.toefl_writing_p1_score:output_type -> chat_completion.ChatMessage
+	0,  // 66: chat_completion.ChatService.toefl_writing_p2_enrich:output_type -> chat_completion.ChatMessage
+	0,  // 67: chat_completion.ChatService.toefl_writing_p2_score:output_type -> chat_completion.ChatMessage
+	0,  // 68: chat_completion.ChatService.toefl_writing_p3_enrich:output_type -> chat_completion.ChatMessage
+	0,  // 69: chat_completion.ChatService.toefl_writing_p3_generate:output_type -> chat_completion.ChatMessage
+	0,  // 70: chat_completion.ChatService.cn_to_en:output_type -> chat_completion.ChatMessage
+	0,  // 71: chat_completion.ChatService.en_to_cn:output_type -> chat_completion.ChatMessage
+	0,  // 72: chat_completion.ChatService.ielts_speaking_exercise:output_type -> chat_completion.ChatMessage
+	0,  // 73: chat_completion.ChatService.ielts_speaking_exam:output_type -> chat_completion.ChatMessage
+	5,  // 74: chat_completion.ChatService.ielts_talk_report_impl:output_type -> chat_completion.TalkReport
+	5,  // 75: chat_completion.ReportService.ielts_talk_report:output_type -> chat_completion.TalkReport
+	41, // [41:76] is the sub-list for method output_type
+	6,  // [6:41] is the sub-list for method input_type
 	6,  // [6:6] is the sub-list for extension type_name
 	6,  // [6:6] is the sub-list for extension extendee
 	0,  // [0:6] is the sub-list for field type_name
