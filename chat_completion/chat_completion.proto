@@ -55,7 +55,7 @@ service ChatService {
 
 service ReportService {
     // 雅思对话报告-for gateway
-    rpc ielts_talk_report (QueryExamAnswerListRequest) returns (TalkReport) {}
+    // rpc ielts_talk_report (QueryExamAnswerListRequest) returns (TalkReport) {}
 };
 
 message ChatMessage {
